@@ -5,7 +5,7 @@ from training import *
 import numpy as np
 import music21 as m21
 
-MIDI_OUTPUT_PATH = "Backend/Generated Melodies/melody.mid"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/Generated Melodies/melody.mid"
+MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/Generated Melodies/melody.mid"
 
 
 class Generator:

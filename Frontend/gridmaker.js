@@ -240,11 +240,12 @@ function sendGenerator() {
     body:JSON.stringify({data: String(musicOutput)})})
     .then(response=>response.blob())
     .then(blob=>{
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = melody.mid;
-        a.click;
+        download(blob, "melody.mid")
+        // var url = window.URL.createObjectURL(blob);
+        // var a = document.createElement('a');
+        // a.href = url;
+        // a.download = melody.mid;
+        // a.click;
     });
 
 
