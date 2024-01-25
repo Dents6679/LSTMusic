@@ -224,28 +224,24 @@ function playMusic(boolBoard) {
  */
 function sendGenerator() {
 
-    // Download melody
-    download(encodeMusic(clickedTiles), "Melody");
+    var musicOutput = encodeMusic(clickedTiles);
 
-    const musicOutput = encodeMusic();
+    var formData = new FormData();
+    formData.append('file', musicOutput);
 
 
-    var requestData = new FormData();
-    requestData.append('file', musicOutput);
 
     //send MIDI to API, get response and download the file (all temporary, these will eventually be displayed and playable.)
-    fetch('http://127.0.0.1:5000/generate_melody', {method: 'POST', body:requestData})
+    fetch('http://127.0.0.1:5000/generate_melody', {method: 'POST', body:formData})
     .then(response=>response.blob())
     .then(blob=>{
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = output_file.txt;
+        a.download = melody.mid;
         a.click;
     });
 
 
     clearBoard();
 }
-
-

@@ -4,7 +4,7 @@ from generator import *
 import os
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 generator = Generator(MODEL_FILEPATH)
 UPLOAD_FOLDER_PATH = "Uploaded_files"
