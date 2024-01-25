@@ -224,15 +224,20 @@ function playMusic(boolBoard) {
  */
 function sendGenerator() {
 
-    var musicOutput = encodeMusic(clickedTiles);
-
-    var formData = new FormData();
-    formData.append('file', musicOutput);
+    let musicOutput = encodeMusic(clickedTiles);
+    console.log(typeof musicOutput)
+    console.log("AAAA")
+    console.log(String(musicOutput))
 
 
 
     //send MIDI to API, get response and download the file (all temporary, these will eventually be displayed and playable.)
-    fetch('http://127.0.0.1:5000/generate_melody', {method: 'POST', body:formData})
+    fetch('http://127.0.0.1:5000/generate_melody', 
+    {method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body:JSON.stringify({data: String(musicOutput)})})
     .then(response=>response.blob())
     .then(blob=>{
         var url = window.URL.createObjectURL(blob);

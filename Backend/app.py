@@ -12,7 +12,10 @@ UPLOAD_FOLDER_PATH = "Uploaded_files"
 @app.route('/generate_melody', methods=['POST'])
 def generate_melody():
     print("Generating Melody...")
-    file = request.files['file']
+
+    data = request.json.get('data')
+    print(data)
+'''
     filename = file.filename
     file_path = os.path.join(UPLOAD_FOLDER_PATH, filename)
 
@@ -26,7 +29,7 @@ def generate_melody():
     print("Melody saved, sending back to Frontend.")
 
     return send_file(MIDI_OUTPUT_PATH, download_name="melody.mid")
-
+'''
 
 if __name__ == '__main__':
     app.run()
