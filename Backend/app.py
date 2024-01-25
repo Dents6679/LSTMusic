@@ -7,14 +7,18 @@ app = Flask(__name__)
 # CORS(app)
 
 generator = Generator(MODEL_FILEPATH)
-
+UPLOAD_FOLDER_PATH = "Uploaded_files"
 
 @app.route('/generate_melody', methods=['POST'])
 def generate_melody():
     print("Generating Melody...")
-    supplied_midi_file = request.files['file']
+    file = request.files['file']
+    filename = file.filename
+    file_path = os.path.join(UPLOAD_FOLDER_PATH, filename)
 
-    supplied_seed = preprocess_API(supplied_midi_file)
+    file.save(file_path)
+
+    supplied_seed = preprocess_API(file_path)
     generated_melody = generator.generate_melody(seed=supplied_seed, number_of_steps=400,
                                                  max_sequence_length=SEQUENCE_LENGTH, temperature=0.7)
     print("Melody Generated.")
