@@ -1,3 +1,5 @@
+import os.path
+
 from preprocess import *
 import keras
 import tensorflow
@@ -8,7 +10,7 @@ NUM_UNITS = [256]
 EPOCHS = 10
 BATCH_SIZE = 64
 
-MODEL_FILEPATH = "Backend/Model Saves/model.keras"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/Model Saves/model.keras"
+
 
 
 def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):

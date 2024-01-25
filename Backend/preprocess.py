@@ -10,11 +10,12 @@ import tensorflow
 # @title Constant Definitions
 
 
-ERK_DATASET_PATH = "Backend/KERN/erk"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/KERN/erk"
-KERN_DATASET_PATH = "Backend/KERN"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/KERN"
-SAVE_DIR = "Backend/Encoded Dataset"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/Encoded Dataset"
-SINGLE_FILE_DATASET_DIR = "Backend/single file dataset"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/single file dataset"
-SONG_MAPPINGS_DIR = "Backend/Song Mappings/mappings.json"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/Song Mappings/mappings.json"
+ERK_DATASET_PATH = "KERN/erk"
+KERN_DATASET_PATH = "KERN"
+SINGLE_FILE_DATASET_DIR = "single file dataset"
+SAVE_DIR = "Encoded Dataset"
+SONG_MAPPINGS_DIR = "Song Mappings/mappings.json"
+MODEL_FILEPATH = "Model Saves/model.keras"
 
 SEQUENCE_LENGTH = 64  # Represents the fixed length input which the LSTM will use.
 
