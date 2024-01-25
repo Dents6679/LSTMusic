@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    background-color: rgb(30, 30, 30);
+    white-space: nowrap;
+}
+
+.result-container{
+
+    width: 97.75vw;
+    height:20vh;
+
+    border-radius: 4px;
+    /* background-color: rgb(21, 31, 178); */
+    margin: 0 auto;
+    
+    margin-left: 1.25vw; /* Adjust the margin as needed */
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.roll{
+    /* width: min-content;  */
+    /* height: fit-content;  */
+    
+    width: 90vw; 
+    height: 20vh;
+
+    border-radius: 4px;
+    background-color: rgb(50, 50, 50);
+    
+    
+    margin-left: 0; /* Adjust the margin as needed */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.button-area{
+    width:10vh;
+    height:20vh;
+
+    margin: auto;
+    border-radius: 4px;
+    background-color: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-around;
+    align-items: center;
+
+    
+}
+
+.play-download-button{
+    width: 9vh;
+    height: 9vh;
+    border-radius: 4px;
+ 
+    color: white;
+    font-weight: bold;
+    font-size: 5vh; 
+    text-align: center;
+    vertical-align: middle;
+    line-height: 9vh;
+    border: none;
+    border-radius: 3px;
+}
+
+.result-1-colour{
+    background-color: hsl(277, 86%, 83%);
+}
+
+.result-1-colour:hover{
+    background-color: hsl(277, 86%, 73%);
+}
+
+.result-2-colour{
+    background-color: hsl(47, 86%, 78%);
+}
+
+.result-2-colour:hover{
+    background-color: hsl(47, 86%, 68%);
+}
+
+.result-3-colour{
+    background-color: hsl(0, 86%, 83%);
+}
+
+.result-3-colour:hover{
+    background-color: hsl(0, 86%, 73%);
+}
+
+.original-colour{
+    background-color: #ADF9C2;
+}
+
+
+.result-text{
+    color: orange;
+    background: blue;
+
+}

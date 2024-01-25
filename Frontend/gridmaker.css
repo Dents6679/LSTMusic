@@ -1,0 +1,176 @@
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    background-color: rgb(50, 50, 50);
+    white-space: nowrap;
+}
+
+#piano-alligner {
+    width: 80vw; /* Adjust the width as needed */
+    height: 55vh; /* Adjust the height as needed */
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+#roll {
+    width: min-content; 
+    height: fit-content; 
+    
+    background-color: rgb(30, 30, 30);
+    margin: 0 auto;
+    margin-left: 1.25vw; /* Adjust the margin as needed */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#roll div {
+    width: fit-content; /* Adjusted for the border width */
+    height: fit-content; /* 1/24 of the height */
+    background-color: none;
+    font-size: 1.44vw; /* Adjust font size as needed */
+    display: flex;
+}
+
+
+#roll div div {
+    width: 4.275vw; /* Adjusted for the border width */
+    height: 2vh; /* 1/24 of the height */
+    background-color: none;
+    border: 0.1vw solid #383838;
+    display: flex;
+
+}
+
+
+.clicked {
+    width: 4.275vw; 
+    height: 2vh;
+    background-color: aquamarine;
+    border: 0.1vw solid aquamarine;
+    border: 0.1vw solid aquamarine;
+    display: flex;
+}
+
+#piano-keys {
+    width: 8.33vw;
+    height: fit-content; 
+    float: left;
+    color: white;
+    text-align: center;
+    background-color: none;
+}
+
+
+/** Lower Area Stuff */
+
+
+
+#slider-space{
+    display:inline-block;
+}
+
+
+#generate-button {
+    width: 13vw; 
+    height: 5vh; 
+    color: white;
+    font-weight: bold;
+    font-size: 2.1vh; 
+    background-color: #6200EE;
+    border: none;
+    border-radius: 3px;
+    margin-right: 0.8vw;
+}
+
+#clear-button{
+    width: 8vw; 
+    height: 5vh; 
+    color: white;
+    font-weight: bold;
+    font-size: 2.1vh; 
+    background-color: hsl(40, 100%, 47%);
+    border: none;
+    border-radius: 3px;
+    margin-right: 0.8vw;
+}
+
+#clear-button:hover{
+    background-color: hsl(40, 100%, 38%);
+}
+
+#generate-button:hover {
+    background-color: hsl(265, 100%, 38%);
+}
+
+#play-button {
+    width: 5vw; 
+    height: 5vh; 
+    margin-right: 0.8vw;
+    margin-left: 20vw;
+    color: white;
+    font-weight: bold;
+    font-size: 2.1vh; 
+    background-color: hsl(13, 100%, 47%);
+    border: none;
+    border-radius: 3px;
+}
+
+#play-button:hover {
+    background-color: hsl(13, 100%, 38%);
+}
+
+
+
+#bpm-container {
+    width: min-content;
+    height: 5vh;
+    float: right;
+    border-radius: 4px;
+    margin-right: 10vw;
+    background-color: #464646;
+    padding: 0 0.6vw;
+
+}
+
+#bpm-readout {
+    margin-top: 0.2vh;
+    font-size: 1.7vh;
+    margin-bottom: -10px;
+}
+
+#bpm-slider {
+    margin-top: -4px;
+    width: 15vw; /* Full-width */
+    height: 5vh;
+}
+
+
+
+
+.white-key {
+    height: 2vh; /* 1/24 of the height */
+    background-color: white;
+    border: 0.1vw solid #464646;
+    color: black;
+    font-size: 1vw; /* Adjust font size as needed */
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.black-key {
+
+    height: 2vh; /* 1/24 of the height */
+    background-color: black;
+    border: 0.1vw solid #464646;
+    margin-left: auto;
+    margin-right: 0;
+    font-size: 0.9vw; /* Adjust font size as needed */
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
