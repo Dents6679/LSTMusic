@@ -5,7 +5,7 @@ from training import *
 import numpy as np
 import music21 as m21
 
-MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"  # "C:/Users/td336/OneDrive - University of Sussex/Third Year/Individual project/Backend/Generated Melodies/melody.mid"
+MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
 
 
 class Generator:
@@ -23,12 +23,12 @@ class Generator:
         self._start_symbols = ["/"] * SEQUENCE_LENGTH
 
     def _sample_with_temperature(self, probability_distribution, temperature):
-        '''
+        """
         Picks a sample from a probability distribution, Forcefully increase the entropy of a specified temparature value.
         :param probability_distribution: The distribution to pick the next note from.
         :param temperature: The temperature to use. 1 is the default temp.
         :return index: The Index of the sample which will be picked.
-        '''
+        """
 
         predictions = np.log(probability_distribution) / temperature
         probability_distribution = np.exp(predictions) / np.sum(np.exp(predictions))
@@ -132,7 +132,7 @@ class Generator:
 
 if __name__ == '__main__':
     generator = Generator(MODEL_FILEPATH)
-    seed = "60 _ 60 _ 60 _ 56 56 56  62 _ 63 64 _ 65 66 _ 67 _ _ "
+    seed = ""
     melody = generator.generate_melody(seed=seed, number_of_steps=400, max_sequence_length=SEQUENCE_LENGTH,
                                        temperature=0.7)
     generator.save_melody_as_midi(melody)

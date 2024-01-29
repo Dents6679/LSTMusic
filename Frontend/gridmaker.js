@@ -225,9 +225,8 @@ function playMusic(boolBoard) {
 function sendGenerator() {
 
     let musicOutput = encodeMusic(clickedTiles);
-    console.log(typeof musicOutput)
-    console.log("AAAA")
-    console.log(String(musicOutput))
+    console.log("Sending Music...")
+    
 
 
 
@@ -247,7 +246,7 @@ function sendGenerator() {
         // a.download = melody.mid;
         // a.click;
     });
-
+    console.log("Board Clearing...")
 
     clearBoard();
 }

@@ -2,13 +2,13 @@ import base64
 from flask import Flask, request, send_file
 from flask_cors import CORS
 from generator import *
-import os
 
 app = Flask(__name__)
 CORS(app)
 
 generator = Generator(MODEL_FILEPATH)
 UPLOAD_FOLDER_PATH = "Uploaded_files"
+
 
 @app.route('/generate_melody', methods=['POST'])
 def generate_melody():
@@ -27,11 +27,15 @@ def generate_melody():
         fp.write(decoded_data)
     print(f"file saved to {file_path}")
 
-    supplied_seed = preprocess_API(file_path)
+    supplied_seed, reverse_transposition = preprocess_api(file_path)
     generated_melody = generator.generate_melody(seed=supplied_seed, number_of_steps=400,
                                                  max_sequence_length=SEQUENCE_LENGTH, temperature=0.7)
+
+    # un-transpose melody to match key of original user-submitted melody
+    generated_melody_in_original_key = undo_transpose(generated_melody, reverse_transposition)
+
     print("Melody Generated.")
-    generator.save_melody_as_midi(melody=generated_melody, path=MIDI_OUTPUT_PATH)
+    generator.save_melody_as_midi(melody=generated_melody_in_original_key, path=MIDI_OUTPUT_PATH)
     print("Melody saved, sending back to Frontend.")
 
     return send_file(MIDI_OUTPUT_PATH, download_name="melody.mid")

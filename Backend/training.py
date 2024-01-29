@@ -2,7 +2,7 @@ import os.path
 
 from preprocess import *
 import keras
-import tensorflow
+
 
 LOSS_FN = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
@@ -14,7 +14,7 @@ BATCH_SIZE = 64
 
 
 def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
-    '''
+    """
         Builds the LSTM
 
         Args:
@@ -28,7 +28,7 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
         Returns:
             int_songs (list of int): The converted songs as a list of integers.
 
-    '''
+    """
     if verbose: print("Creating LSTM Model")
 
     # Create model's architecture.
@@ -53,7 +53,7 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
 
 def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODEL_FILEPATH, flattened_dataset=None,
           verbose=False):
-    '''
+    """
     A High level Function which performs all the network's training steps. Saves the model's weights and biases to a specified file path.
 
     Args:
@@ -70,7 +70,7 @@ def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODE
     Returns:
       Nothing.
 
-    '''
+    """
 
     # Generate Training Sequences
     inputs, targets, vocabulary_size = generate_training_sequences(sequence_length=SEQUENCE_LENGTH,
