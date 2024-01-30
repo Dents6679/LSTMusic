@@ -15,21 +15,21 @@ BATCH_SIZE = 64
 
 def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
     """
-        Builds the LSTM
+    Builds the LSTM.
 
-        Args:
+    :param output_units: int, The number of notes which the LSTM can generate. Represents the number of keys in our training
+                         data.
+    :param loss_fn: callable, The loss function being used for training.
+    :param num_units: list of int, The number of hidden layers in the network, in a list format where each element represents a
+                      hidden layer.
+    :param learning_rate: float, The LSTM's learning rate.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-          loss_fn: The loss function being used for training.
-          num_units: The number of hidden layers in the network, in a list format where each element represents a hidden layer.
-          learning_rate: The LSTM's Learning Rate
-          verbose(bool) False: Enable additional print statements, for debug purposes.
-
-
-        Returns:
-            int_songs (list of int): The converted songs as a list of integers.
-
+    :return: list of int, The converted songs as a list of integers.
     """
-    if verbose: print("Creating LSTM Model")
+
+    if verbose:
+        print("Creating LSTM Model")
 
     # Create model's architecture.
     input_layer = keras.layers.Input(shape=(None,
@@ -54,22 +54,19 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
 def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODEL_FILEPATH, flattened_dataset=None,
           verbose=False):
     """
-    A High level Function which performs all the network's training steps. Saves the model's weights and biases to a specified file path.
+    A high-level function which performs all the network's training steps. Saves the model's weights and biases to a specified file path.
 
-    Args:
-      loss_fn: The loss function being used for training.
-      num_units: the number of hidden layers in the network, in a list format where each elements represents a hidden layer.
-      learning_rate: the learning rate the model uses.
-      epochs: The number of epochs used to train the model.
-      batch_size: the amount of samples the network sees before running backpropagation
-      model_path: the path which the model shall be saved to.
-      flattened_dataset: The Flattened dataset which the model will train off of.
-      verbose(bool) False: Enable additional print statements, for debug purposes.
+    :param loss_fn: callable, The loss function being used for training.
+    :param num_units: list of int, The number of hidden layers in the network, in a list format where each element represents a
+                      hidden layer.
+    :param learning_rate: float, The learning rate the model uses.
+    :param epochs: int, The number of epochs used to train the model.
+    :param batch_size: int, The amount of samples the network sees before running backpropagation.
+    :param model_path: str, The path which the model shall be saved to.
+    :param flattened_dataset: list, The flattened dataset which the model will train off of.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-
-    Returns:
-      Nothing.
-
+    :return: None.
     """
 
     # Generate Training Sequences

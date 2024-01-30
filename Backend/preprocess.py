@@ -31,24 +31,19 @@ ACCEPTABLE_DURATIONS = [
 
 # @title Pre-Processing & Encoding
 
-'''
-  Takes a file path and loads all kern and midi songs into music21's representation.
-  Ignores all other file types.
 
-  Args:
-    dataset_path (string): the file path of the dataset directory as a string.
-    verbose(bool) False: Enable additional print statements, for debug purposes
-
-  Returns:
-    songs (List of music21.stream.base.score): The list of converted songs.
-
-  Raises:
-    NameError: Provides an error if no files are parsed.
-
-'''
 
 
 def load_songs(dataset_path, verbose=True):
+    """
+    Takes a file path and loads all kern and midi songs into music21's representation.
+    Ignores all other file types.
+
+    :param dataset_path: str, The file path of the dataset directory.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
+    :return: list of music21.stream.base.Score, The list of converted songs.
+    :raises NameError: Provides an error if no files are parsed.
+    """
     print("Loading Songs...")
     songs = []
     for path, subdirs, files in os.walk(dataset_path):
@@ -60,26 +55,24 @@ def load_songs(dataset_path, verbose=True):
     if len(songs) == 0:
         raise NameError("The provided path does not contain any music files.")
     else:
-        if verbose: print(f"{len(songs)} Songs loaded!")
+        if verbose:
+            print(f"{len(songs)} Songs loaded!")
         return songs
 
 
-'''
-  Shows wether a Music21 Score consists entirely of acceptable durations.
-  Makes LSTM representation simpler while not losing too much musical information.
-
-  Args:
-    Song (music21.stream.base.Score): The song being checked
-    AcceptableDurations(List of floats): The list of acceptable notes, expressed as a quarter length (fraction of a quarter note).
-    verbose(bool) False: Enable additional print statements, for debug purposes
-
-  Returns:
-    is_acceptable (bool): If the song is acceptable or not.
-
-'''
-
 
 def has_acceptable_durations(song, acceptable_durations, verbose=True):
+    """
+    Shows whether a Music21 Score consists entirely of acceptable durations.
+    Makes LSTM representation simpler while not losing too much musical information.
+
+    :param song: music21.stream.base.Score, The song being checked.
+    :param acceptable_durations: list of float, The list of acceptable notes, expressed as a quarter length (fraction of a quarter note).
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
+
+    :return: bool, If the song is acceptable or not.
+
+    """
     # Flatten all the song's bars->parts->measures->Notes&rests into a single List.
     for note in song.flatten().notesAndRests:
         if note.duration.quarterLength not in acceptable_durations:
@@ -89,40 +82,14 @@ def has_acceptable_durations(song, acceptable_durations, verbose=True):
     return True
 
 
-
-def undo_transpose(song, interval, verbose=False):
-    """
-          Un-Transposes a Music21 Stream from its generated key into the song's original key, as provided.
-
-          Args:
-            song (music21.stream.Stream): The stream being Converted
-            interval (music21.interval.Interval): The interval to transpose the song by.
-            verbose(bool) False: Enable additional print statements, for debug purposes
-
-          Returns:
-            transposed_song(music21.stream.base.Score): The un-transposed Song.
-
-    """
-
-    if verbose:
-        print("Un-Transposing Generated Melody to align with user supplied melody Key.")
-
-    untransposed_song = song.transpose(interval)
-
-    return untransposed_song
-
-
 def transpose(song, verbose=False):
     """
-      Transposes a Music21 Score from its current key into C Major or A Minor.
+    Transposes a Music21 Score from its current key into C Major or A Minor.
 
-      Args:
-        song (music21.stream.base.Score): The song being Converted
-        verbose(bool) False: Enable additional print statements, for debug purposes
+    :param song: music21.stream.base.Score, The song being converted.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-      Returns:
-        transposed_song(music21.stream.base.Score): The transposed Song.
-
+    :return: music21.stream.base.Score, The transposed song.
     """
     # Get key from metadata.
     parts = song.getElementsByClass(m21.stream.Part)  # Get song's parts (instrument tracks)
@@ -152,26 +119,38 @@ def transpose(song, verbose=False):
     return transposed_song, reversed_interval
 
 
+def undo_transpose(song, interval, verbose=False):
+    """
+    Un-Transposes a Music21 Stream from its generated key into the song's original key, as provided.
 
+    :param song: music21.stream.Stream, The transposed stream to un-transpose.
+    :param interval: music21.interval.Interval, The interval to un-transpose the song by.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
+
+    :return: music21.stream.base.Score, The un-transposed song.
+    """
+
+    if verbose:
+        print("Un-Transposing Generated Melody to align with user supplied melody Key.")
+
+    untransposed_song = song.transpose(interval)
+
+    return untransposed_song
 
 
 def encode_song(song, time_step=0.25, verbose=False):
     """
-      Encodes a music21 Score into a time series String representation
+    Encodes a music21 Score into a time series String representation.
 
-      Encoded data is represented as a File containing the pitch and duration of a note.
-      Each item of the File is a 16th of a note.
-      pitch = 60, duration = 1.0 -> [60, "_", "_", "_"]
+    Encoded data is represented as a File containing the pitch and duration of a note.
+    Each item of the File is a 16th of a note.
+    pitch = 60, duration = 1.0 -> [60, "_", "_", "_"]
 
-      e.g.
-      Args:
-        song (music21.stream.base.Score): The song being Encoded
-        time_step(float): The length of each time step
-        verbose(bool) False: Enable additional print statements, for debug purposes
+    :param song: music21.stream.base.Score, The song being encoded.
+    :param time_step: float, The length of each time step.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-      Returns:
-        encoded_song: The Encoded Song.
-
+    :return: The encoded song.
     """
 
     encoded_song = []
@@ -201,15 +180,14 @@ def encode_song(song, time_step=0.25, verbose=False):
 
 def preprocess(dataset_path, output_path, verbose=False):
     """
-      Preprocesses all MIDI/KERN files within a provided directory & its subdirectories, writing encoded songs into specified file directory.
-      Parses every MIDI file, Checks for acceptable durations, transposes to Cmaj/Amin,
+    Preprocesses all MIDI/KERN files within a provided directory & its subdirectories, writing encoded songs into specified file directory.
+    Parses every MIDI file, checks for acceptable durations, transposes to Cmaj/Amin.
 
-      Args:
-        dataset_path (String): The directory of the dataset's root
-        output_path(String): The length of each time step
-        verbose(bool) False: Enable additional print statements, for debug purposes
-
+    :param dataset_path: str, The directory of the dataset's root.
+    :param output_path: str, The directory where the encoded songs will be written.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
     """
+
     # Load Data
     songs = load_songs(dataset_path)
 
@@ -235,16 +213,13 @@ def preprocess(dataset_path, output_path, verbose=False):
 
 def preprocess_api(supplied_midi_path, verbose=False):
     """
-      Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
+    Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
 
-      Args:
-        supplied_midi_path (String): The Directory of the file to preprocess
-        verbose(bool) False: Enable additional print statements, for debug purposes
+    :param supplied_midi_path: str, The directory of the file to preprocess.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-      Returns:
-        encoded_api_song: The fully preprocessed API song.
-        reverse_transposition: The Transposition required to return the song to its original key from when it's inputted.
-
+    :return: tuple, (encoded_api_song, reverse_transposition),
+             The fully preprocessed API song and the transposition required to return the song to its original key.
     """
 
     # Parse Supplied MIDI song.
@@ -268,12 +243,11 @@ def preprocess_api(supplied_midi_path, verbose=False):
 
 def load(file_path):
     """
-      Loads an encoded song from a file.
+    Loads an encoded song from a file.
 
-      Args:
-        file_path (String): The Directory of the file to load.
-      Returns:
-        song(String): The string representation of the file's contents.
+    :param file_path: str, The directory of the file to load.
+
+    :return: str, The string representation of the file's contents.
     """
 
     with open(file_path, "r") as fp:
@@ -283,16 +257,18 @@ def load(file_path):
 
 def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_length, save=False, verbose=False):
     """
-      Flattens Multiple files in a time series string representation into a single String File, saving the file while doing so.
+    Flattens multiple files in a time series string representation into a single String File, saving the file while doing so.
 
-      Args:
-        encoded_dataset_path (String): The String of the flattened data
-        output_path (String): The path out output the JSON file to.
-        sequence_length (Int): The sequence length to use.
-        save (bool) False: Whether to save the flattened string or not.
-        verbose(bool) False: Enable additional print statements, for debug purposes
+    :param encoded_dataset_path: str, The string of the flattened data.
+    :param output_path: str, The path to output the JSON file to.
+    :param sequence_length: int, The sequence length to use.
+    :param save: bool, optional, Whether to save the flattened string or not. Default is False.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
     """
-    if verbose: print("Started song flattening...")
+
+    if verbose:
+        print("Started song flattening...")
+
     song_delimiter = "/ " * sequence_length
     songs = ""
 
@@ -320,17 +296,14 @@ def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_l
 
 def create_song_mappings(flattened_songs, mapping_path, verbose=False):
     """
-      Creates a mapping of a song's symbols of its time series string representation to integers, saving it as a JSON file
-      NOTE: This does not encode the symbol, it only creates a mapping for it.
+    Creates a mapping of a song's symbols of its time series string representation to integers, saving it as a JSON file.
+    NOTE: This does not encode the symbol, it only creates a mapping for it.
 
-      Args:
-        flattened_songs (String): The String of the flattened data
-        mapping_path (String): The path out output the JSON file to.
-        verbose(bool) False: Enable additional print statements, for debug purposes
+    :param flattened_songs: str, The string of the flattened data.
+    :param mapping_path: str, The path to output the JSON file to.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-      Returns:
-        mappings(Dict{string:int}): Dictionary object of the mappings.
-
+    :return: dict, Dictionary object of the mappings.
     """
 
     mappings = {}
@@ -354,17 +327,14 @@ def create_song_mappings(flattened_songs, mapping_path, verbose=False):
 
 def convert_songs_to_int(flattened_songs_string, mappings_dictionary=None, verbose=False):
     """
-      Converts a flattened song dataset from Time Series string representation into a mapped time series integer representation using a provided Mapping..
-      Done to allow LSTM to take integer values.
+    Converts a flattened song dataset from Time Series string representation into a mapped time series integer representation using a provided Mapping.
+    Done to allow LSTM to take integer values.
 
-      Args:
-        flattened_songs_string (String): The String Object of the flattened Songs.
-        mappings_dictionary(Dict)=None: Use a supplied dictionary made from create_song_mappings()
-        verbose(bool) False: Enable additional print statements, for debug purposes
+    :param flattened_songs_string: str, The string object of the flattened songs.
+    :param mappings_dictionary: dict, optional, Use a supplied dictionary made from create_symbol_mapping(). Default is None.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-      Returns:
-        int_songs (list of int): The converted songs as a list of integers.
-
+    :return: list of int, The converted songs as a list of integers.
     """
 
     if verbose:
@@ -393,22 +363,18 @@ def convert_songs_to_int(flattened_songs_string, mappings_dictionary=None, verbo
 
 def generate_training_sequences(sequence_length, songs_dataset_string=None, mappings_dictionary=None, verbose=False):
     """
-      Creates (dataset symbol length - sequence length) number of training sequences.
-      Inputs (fixed length sequences) and target outputs (item just after this sequence) for the LSTM from a integer dataset representation.
-      e.g. [11, 12, 13, 14, ...] -> i: [11, 12], t: 13; i: [12, 13], t: 14
+    Creates (dataset symbol length - sequence length) number of training sequences.
+    Inputs (fixed length sequences) and target outputs (item just after this sequence) for the LSTM from an integer dataset representation.
+    e.g. [11, 12, 13, 14, ...] -> i: [11, 12], t: 13; i: [12, 13], t: 14
 
+    :param sequence_length: int, The sequence length which the LSTM will use to predict its next note.
+    :param songs_dataset_string: str, The string object of the flattened dataset.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-
-      Args:
-        sequence_length (int): The sequence length which the LSTM will use to predict it's next note.
-        songs_dataset_string (String): The String Object of the flattened dataset.
-        verbose(bool) False: Enable additional print statements, for debug purposes
-
-      Returns:
-        inputs: 3D list of One-hot encoded Training sequences, with each note being classified from the set of available notes from the vocab.
-        targets: The Next notes which are expected from each training sequence as a numpy array.
-        vocabulary_size: The size of the vocabulary used, Used in LSTM
-
+    :return: tuple, (inputs, targets, vocabulary_size),
+             inputs: 3D list of one-hot encoded training sequences,
+             targets: the next notes which are expected from each training sequence as a numpy array,
+             vocabulary_size: the size of the vocabulary used (used in LSTM).
     """
 
     if songs_dataset_string is None:

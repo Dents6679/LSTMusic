@@ -12,9 +12,9 @@ def streamify_melody(melody, step_duration=0.25):
     """
     De-encodes a Time Series String into a M21 Stream object.
 
-    :param melody: The Melody to de-encode
-    :param step_duration: The Step duration.
-    :return (Music21.stream.Stream): THe M21 Stream representation of the melody.
+    :param melody: M21.stream.Stream, The Melody to de-encode
+    :param step_duration: float, The Step duration.
+    :return stream: Music21.stream.Stream, The M21 Stream representation of the melody.
     """
 
     # Create music21 stream
@@ -57,9 +57,9 @@ def streamify_melody(melody, step_duration=0.25):
 def sample_with_temperature(probability_distribution, temperature):
     """
     Picks a sample from a probability distribution, Forcefully increase the entropy of a specified temparature value.
-    :param probability_distribution: The distribution to pick the next note from.
-    :param temperature: The temperature to use. 1 is the default temp.
-    :return index: The Index of the sample which will be picked.
+    :param probability_distribution: list of float, The distribution to pick the next note from.
+    :param temperature: float, The temperature to use. 1 is the default temp.
+    :return index: int, The Index of the sample which will be picked.
     """
 
     predictions = np.log(probability_distribution) / temperature
@@ -77,7 +77,7 @@ class Generator:
     def __init__(self, model_path):
         """
         Initialises the Music Generator by loading a trained model.
-        :param model_path: Path of the saved model.
+        :param model_path: str, Path of the saved model.
         """
         self.model_path = model_path
         self.model = keras.models.load_model(model_path)
@@ -92,11 +92,11 @@ class Generator:
     def generate_melody(self, seed, number_of_steps, max_sequence_length, temperature):
         """
         Generates a melody.
-        :param seed: The seed which starts the melody off, in string time series notation ("64 _ 63 _ _")
-        :param number_of_steps: The number of steps to generate before stopping.
-        :param max_sequence_length: Limits the sequence length which the network uses for 'context'. Use Sequence length due to training, uses SEQUENCE_LENGTH
-        :param temperature: A Value which impacts the randomness of output symbols are sampled from the network.
-        :return (String): The String Representation of the new song.
+        :param seed: str, The seed which starts the melody off, in string time series notation ("64 _ 63 _ _")
+        :param number_of_steps: int, The number of steps to generate before stopping.
+        :param max_sequence_length: int, Limits the sequence length which the network uses for 'context'. Use Sequence length due to training, uses SEQUENCE_LENGTH
+        :param temperature: float, A Value which impacts the randomness of output symbols are sampled from the network.
+        :return melody: str, The String Representation of the new song.
         """
 
         # Create seed with start symbols.
