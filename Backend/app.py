@@ -1,7 +1,10 @@
 import base64
 from flask import Flask, request, send_file
 from flask_cors import CORS
-from generator import *
+from generator import Generator, streamify_melody, MIDI_OUTPUT_PATH
+from training import MODEL_FILEPATH
+from preprocess import SEQUENCE_LENGTH
+from api_tools import preprocess_api, undo_transpose
 
 app = Flask(__name__)
 CORS(app)

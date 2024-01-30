@@ -1,22 +1,19 @@
-# @title Imports & Drive mounting
+# Imports & Drive mounting
 import os
 import music21 as m21
 import json
 import keras
 import numpy as np
 
-
-# @title Constant Definitions
-
-
-ERK_DATASET_PATH = "KERN/erk"
-KERN_DATASET_PATH = "KERN"
-SINGLE_FILE_DATASET_DIR = "single file dataset"
-SAVE_DIR = "Encoded Dataset"
-SONG_MAPPINGS_DIR = "Song Mappings/mappings.json"
-MODEL_FILEPATH = "Model Saves/model.keras"
+# Constant Definitions
 
 SEQUENCE_LENGTH = 64  # Represents the fixed length input which the LSTM will use.
+
+KERN_DATASET_PATH = "KERN"
+SINGLE_FILE_DATASET_PATH = "single file dataset"
+ENCODED_DATASET_DIR = "Encoded Dataset"
+NOTE_MAPPINGS_PATH = "Song Mappings/mappings.json"
+
 
 ACCEPTABLE_DURATIONS = [
     0.25,  # Sixteenth Note
@@ -28,9 +25,6 @@ ACCEPTABLE_DURATIONS = [
     3,  # 3 Quarter Note
     4  # Whole note
 ]
-
-# @title Pre-Processing & Encoding
-
 
 
 
@@ -58,7 +52,6 @@ def load_songs(dataset_path, verbose=True):
         if verbose:
             print(f"{len(songs)} Songs loaded!")
         return songs
-
 
 
 def has_acceptable_durations(song, acceptable_durations, verbose=True):
@@ -115,27 +108,7 @@ def transpose(song, verbose=False):
     print(f"Interval is{str(interval)}.")
     transposed_song = song.transpose(interval)
 
-
     return transposed_song, reversed_interval
-
-
-def undo_transpose(song, interval, verbose=False):
-    """
-    Un-Transposes a Music21 Stream from its generated key into the song's original key, as provided.
-
-    :param song: music21.stream.Stream, The transposed stream to un-transpose.
-    :param interval: music21.interval.Interval, The interval to un-transpose the song by.
-    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
-
-    :return: music21.stream.base.Score, The un-transposed song.
-    """
-
-    if verbose:
-        print("Un-Transposing Generated Melody to align with user supplied melody Key.")
-
-    untransposed_song = song.transpose(interval)
-
-    return untransposed_song
 
 
 def encode_song(song, time_step=0.25, verbose=False):
@@ -177,7 +150,6 @@ def encode_song(song, time_step=0.25, verbose=False):
     return encoded_song
 
 
-
 def preprocess(dataset_path, output_path, verbose=False):
     """
     Preprocesses all MIDI/KERN files within a provided directory & its subdirectories, writing encoded songs into specified file directory.
@@ -206,39 +178,6 @@ def preprocess(dataset_path, output_path, verbose=False):
         save_path = os.path.join(output_path, str(i))
         with open(save_path, "w") as fp:
             fp.write(encoded_song)
-
-
-
-
-
-def preprocess_api(supplied_midi_path, verbose=False):
-    """
-    Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
-
-    :param supplied_midi_path: str, The directory of the file to preprocess.
-    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
-
-    :return: tuple, (encoded_api_song, reverse_transposition),
-             The fully preprocessed API song and the transposition required to return the song to its original key.
-    """
-
-    # Parse Supplied MIDI song.
-    api_supplied_song = m21.converter.parse(supplied_midi_path)
-
-    # Filter out songs with non-acceptable durations (only using 1/16, 1/8, 1/4, 1/2, 1 notes)
-    if not has_acceptable_durations(api_supplied_song, ACCEPTABLE_DURATIONS, verbose):
-        raise Exception("The provided song contains an invalid Note length.")
-
-    # Transpose Songs into Cmaj/Amin for standardisation
-    api_supplied_song, reverse_transposition = transpose(api_supplied_song, verbose)
-
-    # Encode songs with music time series representation
-    encoded_api_song = encode_song(song=api_supplied_song, time_step=0.25, verbose=verbose)
-
-    return encoded_api_song, reverse_transposition
-
-
-# @title Dataset Encoding for LSTM Use
 
 
 def load(file_path):
@@ -347,7 +286,7 @@ def convert_songs_to_int(flattened_songs_string, mappings_dictionary=None, verbo
             print("Loading Mappings from JSON file.")
 
         # Load Mappings from JSON file
-        with open(SONG_MAPPINGS_DIR, "r") as fp:
+        with open(NOTE_MAPPINGS_PATH, "r") as fp:
             mappings_dictionary = json.load(fp)
 
     # Cast songs string into a list
@@ -367,8 +306,10 @@ def generate_training_sequences(sequence_length, songs_dataset_string=None, mapp
     Inputs (fixed length sequences) and target outputs (item just after this sequence) for the LSTM from an integer dataset representation.
     e.g. [11, 12, 13, 14, ...] -> i: [11, 12], t: 13; i: [12, 13], t: 14
 
+
     :param sequence_length: int, The sequence length which the LSTM will use to predict its next note.
     :param songs_dataset_string: str, The string object of the flattened dataset.
+    :param mappings_dictionary: dict, optional, Allows a dictionary mapping to be provided.
     :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
     :return: tuple, (inputs, targets, vocabulary_size),
@@ -382,7 +323,7 @@ def generate_training_sequences(sequence_length, songs_dataset_string=None, mapp
         if verbose:
             print("Loading String Dataset from File.")
 
-        songs_dataset_string = load(SINGLE_FILE_DATASET_DIR)
+        songs_dataset_string = load(SINGLE_FILE_DATASET_PATH)
     # Map songs to their integer representation.
     int_songs = convert_songs_to_int(flattened_songs_string=songs_dataset_string,
                                      mappings_dictionary=mappings_dictionary)
@@ -411,7 +352,8 @@ def generate_training_sequences(sequence_length, songs_dataset_string=None, mapp
 
     vocabulary_size = len(set(int_songs))
     inputs = keras.utils.to_categorical(inputs,
-                                        num_classes=vocabulary_size)  # One-hot encodes Training sequences into a 3D Array representing each note's Class.
+                                        num_classes=vocabulary_size)  # One-hot encodes Training sequences into a 3D
+    # Array representing each note's Class.
 
     targets = np.array(targets)  # Casting targets list to numpy array for later use.
 
@@ -422,15 +364,15 @@ def main():
     # Preprocess and save the dataset
     # preprocess(dataset_path=KERN_DATASET_PATH, output_path=SAVE_DIR, verbose=True)
     # Flatten dataset
-    flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=SAVE_DIR,
-                                                       output_path=SINGLE_FILE_DATASET_DIR,
+    flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=ENCODED_DATASET_DIR,
+                                                       output_path=SINGLE_FILE_DATASET_PATH,
                                                        sequence_length=SEQUENCE_LENGTH, save=True, verbose=True)
     # Create integer mappings for all symbols from the flattened dataset.
-    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=SONG_MAPPINGS_DIR,
+    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=NOTE_MAPPINGS_PATH,
                                          verbose=True)
     # Create Inputs and Targets for the LSTM to use.
-    inputs, targets = generate_training_sequences(sequence_length=SEQUENCE_LENGTH,
-                                                  songs_dataset_string=flattened_dataset, verbose=True)
+    inputs, targets, vocab_size = generate_training_sequences(sequence_length=SEQUENCE_LENGTH,
+                                                              songs_dataset_string=flattened_dataset, verbose=True)
 
 
 if __name__ == '__main__':

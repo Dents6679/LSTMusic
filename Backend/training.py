@@ -1,16 +1,21 @@
-import os.path
-
-from preprocess import *
+from preprocess import (preprocess,
+                        generate_training_sequences,
+                        flatten_dataset_to_single_file,
+                        create_song_mappings,
+                        SEQUENCE_LENGTH,
+                        SINGLE_FILE_DATASET_PATH,
+                        ENCODED_DATASET_DIR,
+                        NOTE_MAPPINGS_PATH
+                        )
 import keras
-
 
 LOSS_FN = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 NUM_UNITS = [256]
 EPOCHS = 10
 BATCH_SIZE = 64
-
-
+MODEL_FILEPATH = "Model Saves/model.keras"
+ERK_DATASET_PATH = "KERN/erk"
 
 
 def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
@@ -33,7 +38,7 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
 
     # Create model's architecture.
     input_layer = keras.layers.Input(shape=(None,
-                                      output_units))  # Using None allows us to use as manytimestaps as we like. Allows Generation of Melodies of any length.
+                                            output_units))  # Using None allows us to use as manytimestaps as we like. Allows Generation of Melodies of any length.
     # Output units represents the vocabulary size that can be generated.
     x = keras.layers.LSTM(num_units[0])(input_layer)  # Pass input into LSTM layer using Functional API
     x = keras.layers.Dropout(.2)(x)  # Add dropout layer to model. (Avoids overfitting)
@@ -46,7 +51,8 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
                   metrics=["accuracy"]
                   )
 
-    if verbose: model.summary()  # print a model summary.
+    if verbose:
+        model.summary()  # print a model summary.
 
     return model
 
@@ -86,12 +92,12 @@ def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODE
 
 
 if __name__ == "__main__":
-    preprocess(dataset_path=ERK_DATASET_PATH, output_path=SAVE_DIR,
+    preprocess(dataset_path=ERK_DATASET_PATH, output_path=SINGLE_FILE_DATASET_PATH,
                verbose=True)  # TODO: Change to full dataset, remember to delete everything from the folders once this is changed.
-    flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=SAVE_DIR,
-                                                       output_path=SINGLE_FILE_DATASET_DIR,
+    flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=ENCODED_DATASET_DIR,
+                                                       output_path=SINGLE_FILE_DATASET_PATH,
                                                        sequence_length=SEQUENCE_LENGTH, save=False, verbose=True)
-    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=SONG_MAPPINGS_DIR,
+    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=NOTE_MAPPINGS_PATH,
                                          verbose=True)
     train(loss_fn=LOSS_FN, num_units=NUM_UNITS, learning_rate=LEARNING_RATE, epochs=EPOCHS, batch_size=BATCH_SIZE,
           model_path=MODEL_FILEPATH, flattened_dataset=flattened_dataset, verbose=True)

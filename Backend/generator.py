@@ -1,7 +1,7 @@
-import keras
 import json
-from preprocess import SEQUENCE_LENGTH, SONG_MAPPINGS_DIR
-from training import *
+import keras
+from preprocess import SEQUENCE_LENGTH, NOTE_MAPPINGS_PATH
+from training import MODEL_FILEPATH
 import numpy as np
 import music21 as m21
 
@@ -10,7 +10,7 @@ MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
 
 def streamify_melody(melody, step_duration=0.25):
     """
-    De-encodes a Time Series String into a M21 Stream object.
+    De-encodes a Time Series String into an M21 Stream object.
 
     :param melody: M21.stream.Stream, The Melody to de-encode
     :param step_duration: float, The Step duration.
@@ -81,7 +81,7 @@ class Generator:
         """
         self.model_path = model_path
         self.model = keras.models.load_model(model_path)
-        with open(SONG_MAPPINGS_DIR, "r") as fp:
+        with open(NOTE_MAPPINGS_PATH, "r") as fp:
             self._mappings = json.load(fp)
 
         self._start_symbols = ["/"] * SEQUENCE_LENGTH
@@ -92,14 +92,16 @@ class Generator:
     def generate_melody(self, seed, number_of_steps, max_sequence_length, temperature):
         """
         Generates a melody.
-        :param seed: str, The seed which starts the melody off, in string time series notation ("64 _ 63 _ _")
+        :param seed: str, The seed which kick-starts the melody off, in string time series notation ("64 _ 63 _ _")
         :param number_of_steps: int, The number of steps to generate before stopping.
-        :param max_sequence_length: int, Limits the sequence length which the network uses for 'context'. Use Sequence length due to training, uses SEQUENCE_LENGTH
+        :param max_sequence_length: int, Limits the sequence length which the network uses for 'context'. Use Sequence
+                                         length due to training, uses SEQUENCE_LENGTH
         :param temperature: float, A Value which impacts the randomness of output symbols are sampled from the network.
         :return melody: str, The String Representation of the new song.
         """
 
         # Create seed with start symbols.
+        # The seed here will be provided by the Frontend and is provided by the user.
         seed = seed.split()
         melody = seed  # Initiate melody as seed.
         seed = self._start_symbols + seed
@@ -114,13 +116,15 @@ class Generator:
 
             # One hot encode the Seed.
             onehot_seed = keras.utils.to_categorical(seed, num_classes=len(
-                self._mappings))  # TODO: This may cause issues, the length of self mappings may not be the same as a user inputted melody.
+                self._mappings))
+            # TODO: This may cause issues, the length of self mappings may not be the same as a user inputted melody.
             # 3d array of (1, max_sequence_length * vocabulary size)
             onehot_seed = onehot_seed[np.newaxis, ...]
 
             # Predict the next note. (gives a probability of each symbol in the vocabulary.)
             next_note_probability_distribution = self.model.predict(onehot_seed)[0]
-            # Could just use the highest probability item here, but to decrease the 'rigidity' of the output I'm gonna use the temparature.
+            # Could just use the highest probability item here...
+            # But, to decrease the 'rigidity' of the output I'm going to use the temperature picked one instead.
 
             output_int = sample_with_temperature(probability_distribution=next_note_probability_distribution,
                                                  temperature=temperature)

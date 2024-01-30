@@ -1,8 +1,8 @@
 import unittest
-import preprocess
 
 
-class testPreprocess(unittest.TestCase):
+
+class TestPreprocess(unittest.TestCase):
 
     def test_load_songs(self):
         pass
