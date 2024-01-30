@@ -85,7 +85,7 @@ class Generator:
         :param number_of_steps: The number of steps to generate before stopping.
         :param max_sequence_length: Limits the sequence length which the network uses for 'context'. Use Sequence length due to training, uses SEQUENCE_LENGTH
         :param temperature: A Value which impacts the randomness of output symbols are sampled from the network.
-        :return:
+        :return (String): The String Representation of the new song.
         """
 
         # Create seed with start symbols.
@@ -126,7 +126,10 @@ class Generator:
 
             # Update the Melody
             melody.append(output_symbol)
-        print("Your melody has been Generated.")
+        print("Melody Generated")
+
+
+
         return melody
 
 
