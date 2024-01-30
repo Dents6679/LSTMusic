@@ -2,10 +2,9 @@
 import os
 import music21 as m21
 import json
-
 import keras
 import numpy as np
-import tensorflow
+
 
 # @title Constant Definitions
 
@@ -81,7 +80,7 @@ def load_songs(dataset_path, verbose=True):
 
 
 def has_acceptable_durations(song, acceptable_durations, verbose=True):
-    # Flatten all of the song's bars->parts->measures->Notes&rests into a single List.
+    # Flatten all the song's bars->parts->measures->Notes&rests into a single List.
     for note in song.flatten().notesAndRests:
         if note.duration.quarterLength not in acceptable_durations:
             if verbose: print("A Song has been discarded as it contains illegal durations")
@@ -93,10 +92,10 @@ def has_acceptable_durations(song, acceptable_durations, verbose=True):
 
 def undo_transpose(song, interval, verbose=False):
     """
-          Un-Transposes a Music21 Score from its generated key into the song's original key, as provided.
+          Un-Transposes a Music21 Stream from its generated key into the song's original key, as provided.
 
           Args:
-            song (music21.stream.base.Score): The song being Converted
+            song (music21.stream.Stream): The stream being Converted
             interval (music21.interval.Interval): The interval to transpose the song by.
             verbose(bool) False: Enable additional print statements, for debug purposes
 
@@ -140,7 +139,7 @@ def transpose(song, verbose=False):
     elif key.mode == "minor":
         interval = m21.interval.Interval(key.tonic, m21.pitch.Pitch("A"))
 
-    reversed_interval = m21.interval.Interval.reverse(interval) # Reversed Interval is Used after a song is generated.
+    reversed_interval = m21.interval.Interval.reverse(interval)  # Reversed Interval is Used after a song is generated.
 
     # Transpose song using calculated interval
     to_note = "C" if key.mode == "major" else "A"
@@ -153,26 +152,28 @@ def transpose(song, verbose=False):
     return transposed_song, reversed_interval
 
 
-'''
-  Encodes a music21 Score into a time series String representation
 
-  Encoded data is represented as a File containing the pitch and duration of a note.
-  Each item of the File is a 16th of a note.
-  pitch = 60, duration = 1.0 -> [60, "_", "_", "_"]
-
-  e.g.
-  Args:
-    song (music21.stream.base.Score): The song being Encoded
-    time_step(float): The length of each time step
-    verbose(bool) False: Enable additional print statements, for debug purposes
-
-  Returns:
-    encoded_song: The Encoded Song.
-
-'''
 
 
 def encode_song(song, time_step=0.25, verbose=False):
+    """
+      Encodes a music21 Score into a time series String representation
+
+      Encoded data is represented as a File containing the pitch and duration of a note.
+      Each item of the File is a 16th of a note.
+      pitch = 60, duration = 1.0 -> [60, "_", "_", "_"]
+
+      e.g.
+      Args:
+        song (music21.stream.base.Score): The song being Encoded
+        time_step(float): The length of each time step
+        verbose(bool) False: Enable additional print statements, for debug purposes
+
+      Returns:
+        encoded_song: The Encoded Song.
+
+    """
+
     encoded_song = []
 
     for event in song.flatten().notesAndRests:
@@ -265,7 +266,7 @@ def preprocess_api(supplied_midi_path, verbose=False):
 # @title Dataset Encoding for LSTM Use
 
 
-def load(file_path, verbose=False):
+def load(file_path):
     """
       Loads an encoded song from a file.
 

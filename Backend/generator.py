@@ -8,6 +8,70 @@ import music21 as m21
 MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
 
 
+def streamify_melody(melody, step_duration=0.25):
+    """
+    De-encodes a Time Series String into a M21 Stream object.
+
+    :param melody: The Melody to de-encode
+    :param step_duration: The Step duration.
+    :return (Music21.stream.Stream): THe M21 Stream representation of the melody.
+    """
+
+    # Create music21 stream
+    stream = m21.stream.Stream()
+
+    # Parse melody's Symbols & Create note/rest objects.
+    start_symbol = None
+    step_count = 1
+
+    for i, symbol in enumerate(melody):
+        # New note/rest case
+        if symbol != "_" or i + 1 == len(melody):
+
+            # Ensure the first note/evnet is not being read.
+            if start_symbol is not None:
+                duration_in_quarter_length = step_duration * step_count
+                # Handle Rest
+                if start_symbol == "r":
+                    m21_event = m21.note.Rest(duration_in_quarter_length)
+
+                # handle Note
+                else:
+                    m21_event = m21.note.Note(int(start_symbol), quarterLength=duration_in_quarter_length)
+
+                # Add event to stream
+                stream.append(m21_event)
+
+                # Reset Step Counter
+                step_count = 1
+
+            # Set the starting symbol from the read symbol.
+            start_symbol = symbol
+        # Prolongation sign case
+        else:
+            step_count += 1
+
+    return stream  # stream.write("midi", path) will convert this into a MIDI file for later.
+
+
+def sample_with_temperature(probability_distribution, temperature):
+    """
+    Picks a sample from a probability distribution, Forcefully increase the entropy of a specified temparature value.
+    :param probability_distribution: The distribution to pick the next note from.
+    :param temperature: The temperature to use. 1 is the default temp.
+    :return index: The Index of the sample which will be picked.
+    """
+
+    predictions = np.log(probability_distribution) / temperature
+    probability_distribution = np.exp(predictions) / np.sum(np.exp(predictions))
+
+    choices = range(len(probability_distribution))  # [0, 1, 2 ,3]
+    index = np.random.choice(choices,
+                             p=probability_distribution)  # Pick a random index using the probability as weights.
+
+    return index
+
+
 class Generator:
 
     def __init__(self, model_path):
@@ -22,61 +86,8 @@ class Generator:
 
         self._start_symbols = ["/"] * SEQUENCE_LENGTH
 
-    def _sample_with_temperature(self, probability_distribution, temperature):
-        """
-        Picks a sample from a probability distribution, Forcefully increase the entropy of a specified temparature value.
-        :param probability_distribution: The distribution to pick the next note from.
-        :param temperature: The temperature to use. 1 is the default temp.
-        :return index: The Index of the sample which will be picked.
-        """
 
-        predictions = np.log(probability_distribution) / temperature
-        probability_distribution = np.exp(predictions) / np.sum(np.exp(predictions))
 
-        choices = range(len(probability_distribution))  # [0, 1, 2 ,3]
-        index = np.random.choice(choices,
-                                 p=probability_distribution)  # Pick a random index using the probability as weights.
-
-        return index
-
-    def save_melody_as_midi(self, melody, step_duration=0.25, path=MIDI_OUTPUT_PATH):
-
-        # Create music21 stream
-        stream = m21.stream.Stream()
-
-        # Parse melody's Symbols & Create note/rest objects.
-        start_symbol = None
-        step_count = 1
-
-        for i, symbol in enumerate(melody):
-            # New note/rest case
-            if symbol != "_" or i + 1 == len(melody):
-
-                # Ensure the first note/evnet is not being read.
-                if start_symbol is not None:
-                    duration_in_quarter_length = step_duration * step_count
-                    # Handle Rest
-                    if start_symbol == "r":
-                        m21_event = m21.note.Rest(duration_in_quarter_length)
-
-                    # handle Note
-                    else:
-                        m21_event = m21.note.Note(int(start_symbol), quarterLength=duration_in_quarter_length)
-
-                    # Add event to stream
-                    stream.append(m21_event)
-
-                    # Reset Step Counter
-                    step_count = 1
-
-                # Set the starting symbol from the read symbol.
-                start_symbol = symbol
-            # Prolongation sign case
-            else:
-                step_count += 1
-
-        # Write m21 stream to a midi file
-        stream.write("midi", path)
 
     def generate_melody(self, seed, number_of_steps, max_sequence_length, temperature):
         """
@@ -111,8 +122,8 @@ class Generator:
             next_note_probability_distribution = self.model.predict(onehot_seed)[0]
             # Could just use the highest probability item here, but to decrease the 'rigidity' of the output I'm gonna use the temparature.
 
-            output_int = self._sample_with_temperature(probability_distribution=next_note_probability_distribution,
-                                                       temperature=temperature)
+            output_int = sample_with_temperature(probability_distribution=next_note_probability_distribution,
+                                                 temperature=temperature)
 
             # Update the adding the sampled int.
             seed.append(output_int)

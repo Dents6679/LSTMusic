@@ -30,12 +30,12 @@ def generate_melody():
     supplied_seed, reverse_transposition = preprocess_api(file_path)
     generated_melody = generator.generate_melody(seed=supplied_seed, number_of_steps=400,
                                                  max_sequence_length=SEQUENCE_LENGTH, temperature=0.7)
-
+    generated_melody_stream = streamify_melody(generated_melody)
     # TODO: un-transpose melody to match key of original user-submitted melody
+    untransposed_melody = undo_transpose(generated_melody_stream, reverse_transposition)
 
-    print(f"Melody Type: {type(generated_melody)}")
     print("Melody Generated.")
-    generator.save_melody_as_midi(melody=generated_melody, path=MIDI_OUTPUT_PATH)
+    untransposed_melody.write("midi", MIDI_OUTPUT_PATH)
     print("Melody saved, sending back to Frontend.")
 
     return send_file(MIDI_OUTPUT_PATH, download_name="melody.mid")
