@@ -37,8 +37,8 @@ def generate_melody():
     # TODO: un-transpose melody to match key of original user-submitted melody
     untransposed_melody = undo_transpose(generated_melody_stream, reverse_transposition)
 
-    print("Melody Generated.")
     untransposed_melody.write("midi", MIDI_OUTPUT_PATH)
+
     print("Melody saved, sending back to Frontend.")
 
     return send_file(MIDI_OUTPUT_PATH, download_name="melody.mid")

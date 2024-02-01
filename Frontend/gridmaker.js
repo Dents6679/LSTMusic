@@ -239,14 +239,35 @@ function sendGenerator() {
     body:JSON.stringify({data: String(musicOutput)})})
     .then(response=>response.blob())
     .then(blob=>{
-        download(blob, "melody.mid")
+        console.log("HELLO. I GOT HERE");
+        console.log("Blob information: " + blob);
+        // download(blob, "melody.mid")
         // var url = window.URL.createObjectURL(blob);
         // var a = document.createElement('a');
         // a.href = url;
         // a.download = melody.mid;
         // a.click;
-    });
-    console.log("Board Clearing...")
+        console.log("Board Clearing...");
+        clearBoard();
 
-    clearBoard();
+        const url = window.URL.createObjectURL(blob);
+        // Create a link element
+        const link = document.createElement('a');
+        // Set the href attribute to the blob URL
+        link.href = url;
+        // Set the download attribute with the desired file name
+        link.download = 'melody.mid';
+        // Append the link to the body
+        document.body.appendChild(link);
+        // Trigger a click event on the link to initiate the download
+        link.click();
+        // Clean up by removing the link element
+        document.body.removeChild(link);
+
+    });
+    
+
+    
+
+    
 }

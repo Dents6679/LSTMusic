@@ -107,8 +107,7 @@ class Generator:
         seed = self._start_symbols + seed
 
         # Map seed to int representation
-        seed = [self._mappings[symbol] for symbol in
-                seed]  # TODO: change this to API fed melody rather than fully random seed.
+        seed = [self._mappings[symbol] for symbol in seed]
 
         for _ in range(number_of_steps):
             # Limit the seed to the max sequence length
