@@ -230,19 +230,20 @@ async function sendFile(songData){
             {   method: 'POST',
                 headers: 
                     {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'text/plain',
                     },
-                body: JSON.stringify({data: songData})
+                body: songData
             }
         )
     }
     catch(error){
-        console.log("Error: " + error)
+        console.log("Error while trying to fetch data.: " + error)
     }
     console.log("Response Received")
-    const responseData = await response.json()
-    console.log("Response: " + responseData) 
-    return responseData
+    setTimeout(function(){
+        window.location.href = "http://127.0.0.1:5000/show_melody"
+    }, 10000)
+    
 }
 
 /**

@@ -21,13 +21,15 @@ def generate_melody():
 
 
         try:
-            data_uri = request.json.get('data')
-        except KeyError as e:
-            print(f"KeyError: Failed to get 'Data' from JSON. {e}")
+            data_uri = str(request.data)
+        except IOError as e:
+            print(f"IOError: Failed to find data from fetch request: {e}")
+
 
 
         try:
             _, base64_data = data_uri.split(',', 1)
+            base64_data = base64_data[:-1] # Removes leftover ' from API
             decoded_data = base64.b64decode(base64_data)
 
             file_path = UPLOAD_FOLDER_PATH+"/melody.mid"
@@ -66,9 +68,16 @@ def generate_melody():
         return resp
 
 
+@app.route('/show_melody', methods=['GET'])
+def get_file():
     if request.method == 'GET':
-        print("GET request received.")
-        pass
+        message = {'status': 200,
+                   'message': 'okay'}
+
+        resp = jsonify(message)
+        resp.status_code = 200
+
+        return send_file(MIDI_OUTPUT_PATH, 'melody.mid')
 
 
 if __name__ == '__main__':
