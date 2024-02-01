@@ -89,14 +89,16 @@ class Generator:
 
 
 
-    def generate_melody(self, seed, number_of_steps, max_sequence_length, temperature):
+    def generate_melody(self, seed, number_of_steps, max_sequence_length, temperature, verbose=False):
         """
         Generates a melody.
+
         :param seed: str, The seed which kick-starts the melody off, in string time series notation ("64 _ 63 _ _")
         :param number_of_steps: int, The number of steps to generate before stopping.
         :param max_sequence_length: int, Limits the sequence length which the network uses for 'context'. Use Sequence
                                          length due to training, uses SEQUENCE_LENGTH
         :param temperature: float, A Value which impacts the randomness of output symbols are sampled from the network.
+        :param verbose: bool, Used to show LSTM predictions or not.
         :return melody: str, The String Representation of the new song.
         """
 
@@ -121,7 +123,7 @@ class Generator:
             onehot_seed = onehot_seed[np.newaxis, ...]
 
             # Predict the next note. (gives a probability of each symbol in the vocabulary.)
-            next_note_probability_distribution = self.model.predict(onehot_seed)[0]
+            next_note_probability_distribution = self.model.predict(onehot_seed, verbose=verbose)[0]
             # Could just use the highest probability item here...
             # But, to decrease the 'rigidity' of the output I'm going to use the temperature picked one instead.
 
@@ -140,7 +142,8 @@ class Generator:
 
             # Update the Melody
             melody.append(output_symbol)
-        print("Melody Generated")
+        if verbose:
+            print("Melody Generated")
 
 
 

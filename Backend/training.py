@@ -16,6 +16,7 @@ EPOCHS = 10
 BATCH_SIZE = 64
 MODEL_FILEPATH = "Model Saves/model.keras"
 ERK_DATASET_PATH = "KERN/erk"
+KERN_DATASET_PATH = "KERN"
 
 
 def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
@@ -92,7 +93,7 @@ def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODE
 
 
 if __name__ == "__main__":
-    preprocess(dataset_path=ERK_DATASET_PATH, output_path=SINGLE_FILE_DATASET_PATH,
+    preprocess(dataset_path=KERN_DATASET_PATH, output_path=SINGLE_FILE_DATASET_PATH,
                verbose=True)  # TODO: Change to full dataset, remember to delete everything from the folders once this is changed.
     flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=ENCODED_DATASET_DIR,
                                                        output_path=SINGLE_FILE_DATASET_PATH,

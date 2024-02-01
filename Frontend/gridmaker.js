@@ -22,7 +22,7 @@ window.onload = function () {
 function startGame() {
 
     // giving functionality to buttons & slider
-    document.getElementById("generate-button").addEventListener("click", sendGenerator) //add event listener to generate.
+    document.getElementById("generate-button").addEventListener("click", () => sendGenerator() ) //add event listener to generate.
     document.getElementById("play-button").addEventListener("click", () => playMusic(clickedTiles)) //add event listener to play inputted notes.
     document.getElementById("clear-button").addEventListener("click", clearBoard) //add event listener to board clearing button
 
@@ -218,56 +218,41 @@ function playMusic(boolBoard) {
     playSlide();
 }
 
+/**
+ * Sends Inputted melody to the backend. (needs changing and updating)
+ * @param {string} songData - the data to be sent to the backend.
+ * @returns the response from the backend in JSON format. 
+ */
+async function sendFile(songData){
+    console.log("Sending Fetch Request to API...");
+    try{
+        const response = await fetch('http://127.0.0.1:5000/generate_melody',
+            {   method: 'POST',
+                headers: 
+                    {
+                        'Content-Type': 'application/json',
+                    },
+                body: JSON.stringify({data: songData})
+            }
+        )
+    }
+    catch(error){
+        console.log("Error: " + error)
+    }
+    console.log("Response Received")
+    const responseData = await response.json()
+    console.log("Response: " + responseData) 
+    return responseData
+}
 
 /**
  * Sends Inputted melody to the backend. (needs changing and updating)
  */
-function sendGenerator() {
-
-    let musicOutput = encodeMusic(clickedTiles);
-    console.log("Sending Music...")
+async function sendGenerator() {
+    let b64MidiOutput = String(encodeMusic(clickedTiles));
     
-
-
-
-    //send MIDI to API, get response and download the file (all temporary, these will eventually be displayed and playable.)
-    fetch('http://127.0.0.1:5000/generate_melody', 
-    {method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body:JSON.stringify({data: String(musicOutput)})})
-    .then(response=>response.blob())
-    .then(blob=>{
-        console.log("HELLO. I GOT HERE");
-        console.log("Blob information: " + blob);
-        // download(blob, "melody.mid")
-        // var url = window.URL.createObjectURL(blob);
-        // var a = document.createElement('a');
-        // a.href = url;
-        // a.download = melody.mid;
-        // a.click;
-        console.log("Board Clearing...");
-        clearBoard();
-
-        const url = window.URL.createObjectURL(blob);
-        // Create a link element
-        const link = document.createElement('a');
-        // Set the href attribute to the blob URL
-        link.href = url;
-        // Set the download attribute with the desired file name
-        link.download = 'melody.mid';
-        // Append the link to the body
-        document.body.appendChild(link);
-        // Trigger a click event on the link to initiate the download
-        link.click();
-        // Clean up by removing the link element
-        document.body.removeChild(link);
-
-    });
-    
-
-    
-
-    
+    response = await sendFile(b64MidiOutput)
+    console.log('Response is: ' + response)
+       
 }
+    

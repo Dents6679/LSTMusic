@@ -2,6 +2,14 @@ from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose
 import music21 as m21
 
 
+class GenerationError(Exception):
+    """Exception raised for errors during AI generation."""
+
+    def __init__(self, message="Error during Music generation. Please Check that your input is valid."):
+        self.message = message
+        super().__init__(self.message)
+
+
 def preprocess_api(supplied_midi_path, verbose=False):
     """
     Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.

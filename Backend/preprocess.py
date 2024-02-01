@@ -105,7 +105,6 @@ def transpose(song, verbose=False):
     to_note = "C" if key.mode == "major" else "A"
     if verbose:
         print(f"Converting Song from Key {key.tonic} {key.mode} To {to_note} {key.mode}")
-    print(f"Interval is{str(interval)}.")
     transposed_song = song.transpose(interval)
 
     return transposed_song, reversed_interval
