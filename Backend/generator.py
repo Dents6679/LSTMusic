@@ -1,6 +1,6 @@
 import json
 import keras
-from preprocess import SEQUENCE_LENGTH, NOTE_MAPPINGS_PATH
+from preprocess import SEQUENCE_LENGTH, NOTE_MAPPINGS_PATH, encode_song
 from training import MODEL_FILEPATH
 import numpy as np
 import music21 as m21
@@ -151,12 +151,22 @@ class Generator:
 
 
 if __name__ == '__main__':
-    generator = Generator(MODEL_FILEPATH)
-    seed = ""
-    melody = generator.generate_melody(seed=seed, number_of_steps=400, max_sequence_length=SEQUENCE_LENGTH,
-                                       temperature=0.7)
-    generator.save_melody_as_midi(melody)
+    # Test the Generator
+    '''
+    Annoyingly this code doesn't allow for transposition, so all of the generated 
+    parts of the melodies will be in Cmaj/Amin. 
+    When using the API, this is handled by the preprocess_api and undo_transpose functions.
+    '''
 
-    melody = generator.generate_melody(seed=seed, number_of_steps=400, max_sequence_length=SEQUENCE_LENGTH,
+    generator = Generator(MODEL_FILEPATH)
+    cheerful_seed = "60 _ 62 _ 64 _ 62 _ 60 _ 67 _ 67 _ _ _ 65 _ 65 _ 64 _ _ _ 62 _ 62 _ 60 _ _ _"
+    long_seed =  "62 _ 62 _ 62 _ 64 _ _ _ 64 _ 64 _ 67 _ _ _ 67 _ _ _ 66 _ _ _ _ _ _ _"
+
+    seed = long_seed
+
+    melody = generator.generate_melody(seed=seed, number_of_steps=500, max_sequence_length=SEQUENCE_LENGTH,
                                        temperature=0.7)
-    generator.save_melody_as_midi(melody)
+
+    melody_stream = streamify_melody(melody)
+    melody_stream.write("midi", MIDI_OUTPUT_PATH)
+    print("Melody Generated.")

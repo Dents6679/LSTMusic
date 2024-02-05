@@ -241,7 +241,7 @@ async function sendFile(songData){
     }
     console.log("Response Received")
     setTimeout(function(){
-        window.location.href = "http://127.0.0.1:5000/show_melody"
+        window.location.href = "http://127.0.0.1:5000/waiting.html"
     }, 10000)
     
 }
