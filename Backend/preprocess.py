@@ -365,13 +365,16 @@ def generate_training_sequences(sequence_length, songs_dataset_string=None, mapp
 
 def main():
     # Preprocess and save the dataset
-    # preprocess(dataset_path=KERN_DATASET_PATH, output_path=SAVE_DIR, verbose=True)
+    preprocess(dataset_path=KERN_DATASET_PATH,
+               output_path=ENCODED_DATASET_DIR,
+               verbose=True)
     # Flatten dataset
     flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=ENCODED_DATASET_DIR,
                                                        output_path=SINGLE_FILE_DATASET_PATH,
                                                        sequence_length=SEQUENCE_LENGTH, save=True, verbose=True)
     # Create integer mappings for all symbols from the flattened dataset.
-    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=NOTE_MAPPINGS_PATH,
+    song_mappings = create_song_mappings(flattened_songs=flattened_dataset,
+                                         mapping_path=NOTE_MAPPINGS_PATH,
                                          verbose=True)
     # Create Inputs and Targets for the LSTM to use.
     inputs, targets, vocab_size = generate_training_sequences(sequence_length=SEQUENCE_LENGTH,

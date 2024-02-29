@@ -8,11 +8,11 @@ from preprocess import (preprocess,
                         NOTE_MAPPINGS_PATH
                         )
 import keras
+import tensorflow as tf
 
 LOSS_FN = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 NUM_UNITS = [256]
-EPOCHS = 10
 BATCH_SIZE = 64
 MODEL_FILEPATH = "Model Saves/model.keras"
 ERK_DATASET_PATH = "KERN/erk"
@@ -80,27 +80,57 @@ def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODE
 
     # Generate Training Sequences
     inputs, targets, vocabulary_size = generate_training_sequences(sequence_length=SEQUENCE_LENGTH,
-                                                                   songs_dataset_string=flattened_dataset, verbose=True)
+                                                                   songs_dataset_string=flattened_dataset,
+                                                                   verbose=True)
 
-    # Build network
-    model = build_model(output_units=vocabulary_size, loss_fn=loss_fn, num_units=num_units, learning_rate=learning_rate,
-                        verbose=verbose)
+    # Build network (Checking if a checkpoint exists)
+    checkpoint_path = "Model Checkpoints/cp-{epoch:04d}.ckpt"
+    latest_checkpoint = tf.train.latest_checkpoint("Model Checkpoints")
+    if latest_checkpoint:
+        if verbose:
+            print(f"Loading weights from {latest_checkpoint}")
+        model = build_model(output_units=vocabulary_size, loss_fn=loss_fn, num_units=num_units,
+                            learning_rate=learning_rate, verbose=verbose)
+        model.load_weights(latest_checkpoint)
+    else:
+        if verbose:
+            print("Starting training from scratch...")
+        model = build_model(output_units=vocabulary_size, loss_fn=loss_fn, num_units=num_units,
+                            learning_rate=learning_rate, verbose=verbose)
+
+    # Checkpoints
+    checkpoint_callback = keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path,
+        save_weights_only=False,
+        verbose=1
+    )
 
     # Train model
-    model.fit(inputs, targets, epochs=epochs, batch_size=batch_size)
+    model.fit(inputs, targets, epochs=epochs, batch_size=batch_size, callbacks=[checkpoint_callback])
 
     # Save Model
-
     model.save(model_path)
 
 
 if __name__ == "__main__":
-    preprocess(dataset_path=KERN_DATASET_PATH, output_path=SINGLE_FILE_DATASET_PATH,
-               verbose=True)  # TODO: Change to full dataset, remember to delete everything from the folders once this is changed.
+    """
+    Driver code to train model. Does all preprocessing and training steps, and saving the model. 
+    Checkpoints are created.
+    """
+    EPOCHS = 16
+
+
+    preprocess(dataset_path=KERN_DATASET_PATH,
+               output_path=ENCODED_DATASET_DIR,
+               verbose=True)
+
     flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=ENCODED_DATASET_DIR,
                                                        output_path=SINGLE_FILE_DATASET_PATH,
-                                                       sequence_length=SEQUENCE_LENGTH, save=False, verbose=True)
-    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=NOTE_MAPPINGS_PATH,
+                                                       sequence_length=SEQUENCE_LENGTH, save=True, verbose=True)
+
+    song_mappings = create_song_mappings(flattened_songs=flattened_dataset,
+                                         mapping_path=NOTE_MAPPINGS_PATH,
                                          verbose=True)
+
     train(loss_fn=LOSS_FN, num_units=NUM_UNITS, learning_rate=LEARNING_RATE, epochs=EPOCHS, batch_size=BATCH_SIZE,
           model_path=MODEL_FILEPATH, flattened_dataset=flattened_dataset, verbose=True)
