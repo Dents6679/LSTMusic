@@ -4,7 +4,7 @@ import music21 as m21
 import json
 import keras
 import numpy as np
-
+from typing import List, Tuple, Any
 # Constant Definitions
 
 SEQUENCE_LENGTH = 64  # Represents the fixed length input which the LSTM will use.
@@ -28,7 +28,7 @@ ACCEPTABLE_DURATIONS = [
 
 
 
-def load_songs(dataset_path, verbose=True):
+def load_songs(dataset_path, verbose=True) -> List[m21.stream.base.Score]:
     """
     Takes a file path and loads all kern and midi songs into music21's representation.
     Ignores all other file types.
@@ -54,7 +54,7 @@ def load_songs(dataset_path, verbose=True):
         return songs
 
 
-def has_acceptable_durations(song, acceptable_durations, verbose=True):
+def has_acceptable_durations(song, acceptable_durations, verbose=True) -> bool:
     """
     Shows whether a Music21 Score consists entirely of acceptable durations.
     Makes LSTM representation simpler while not losing too much musical information.
@@ -75,7 +75,7 @@ def has_acceptable_durations(song, acceptable_durations, verbose=True):
     return True
 
 
-def transpose(song, verbose=False):
+def transpose(song, verbose=False) -> Tuple[m21.stream.base.Score, m21.interval.Interval]:
     """
     Transposes a Music21 Score from its current key into C Major or A Minor.
 
@@ -110,7 +110,7 @@ def transpose(song, verbose=False):
     return transposed_song, reversed_interval
 
 
-def encode_song(song, time_step=0.25, verbose=False):
+def encode_song(song, time_step=0.25, verbose=False) -> str:
     """
     Encodes a music21 Score into a time series String representation.
 
@@ -122,7 +122,7 @@ def encode_song(song, time_step=0.25, verbose=False):
     :param time_step: float, The length of each time step.
     :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
-    :return: The encoded song.
+    :return: str, The encoded song.
     """
 
     encoded_song = []
@@ -149,7 +149,7 @@ def encode_song(song, time_step=0.25, verbose=False):
     return encoded_song
 
 
-def preprocess(dataset_path, output_path, verbose=False):
+def preprocess(dataset_path, output_path, verbose=False) -> None:
     """
     Preprocesses all MIDI/KERN files within a provided directory & its subdirectories, writing encoded songs into specified file directory.
     Parses every MIDI file, checks for acceptable durations, transposes to Cmaj/Amin.
@@ -179,7 +179,7 @@ def preprocess(dataset_path, output_path, verbose=False):
             fp.write(encoded_song)
 
 
-def load(file_path):
+def load(file_path) -> str:
     """
     Loads an encoded song from a file.
 
@@ -193,15 +193,18 @@ def load(file_path):
     return song
 
 
-def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_length, save=False, verbose=False):
+def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_length, save=False, verbose=False) -> str:
     """
-    Flattens multiple files in a time series string representation into a single String File, saving the file while doing so.
+    Flattens multiple files in a time series string representation into a single String File,
+    saving the file while doing so.
 
     :param encoded_dataset_path: str, The string of the flattened data.
     :param output_path: str, The path to output the JSON file to.
     :param sequence_length: int, The sequence length to use.
     :param save: bool, optional, Whether to save the flattened string or not. Default is False.
     :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
+
+    :return songs: str, The flattened dataset.
     """
 
     if verbose:
@@ -263,7 +266,7 @@ def create_song_mappings(flattened_songs, mapping_path, verbose=False):
     return mappings
 
 
-def convert_songs_to_int(flattened_songs_string, mappings_dictionary=None, verbose=False):
+def convert_songs_to_int(flattened_songs_string, mappings_dictionary=None, verbose=False) -> List[int]:
     """
     Converts a flattened song dataset from Time Series string representation into a mapped time series integer representation using a provided Mapping.
     Done to allow LSTM to take integer values.
@@ -292,7 +295,8 @@ def convert_songs_to_int(flattened_songs_string, mappings_dictionary=None, verbo
     flattened_songs_string = flattened_songs_string.split()
 
     # Map songs to integers
-    if verbose: print(f"Mapping {len(flattened_songs_string)} symbols to integers.")
+    if verbose:
+        print(f"Mapping {len(flattened_songs_string)} symbols to integers.")
     for symbol in flattened_songs_string:
         int_songs.append(mappings_dictionary[symbol])
 

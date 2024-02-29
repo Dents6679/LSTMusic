@@ -45,7 +45,9 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
     x = keras.layers.Dropout(.2)(x)  # Add dropout layer to model. (Avoids overfitting)
     output_layer = keras.layers.Dense(output_units, activation="softmax")(x)
 
-    model = keras.Model(input_layer, output_layer)  # Creates Model.
+    # Create Model.
+    model = keras.Model(input_layer, output_layer)
+
     # Compile model.
     model.compile(loss=loss_fn,
                   optimizer=keras.optimizers.Adam(lr=learning_rate),
@@ -59,7 +61,7 @@ def build_model(output_units, loss_fn, num_units, learning_rate, verbose=False):
 
 
 def train(loss_fn, num_units, learning_rate, epochs, batch_size, model_path=MODEL_FILEPATH, flattened_dataset=None,
-          verbose=False):
+          verbose=False) -> None:
     """
     A high-level function which performs all the network's training steps. Saves the model's weights and biases to a specified file path.
 

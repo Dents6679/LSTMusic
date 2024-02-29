@@ -1,5 +1,6 @@
 from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose, encode_song
 import music21 as m21
+from typing import Tuple, List, Any
 
 
 class GenerationError(Exception):
@@ -10,7 +11,7 @@ class GenerationError(Exception):
         super().__init__(self.message)
 
 
-def preprocess_api(supplied_midi_path, verbose=False):
+def preprocess_api(supplied_midi_path, verbose=False) -> Tuple[List[int], m21.interval.Interval]:
     """
     Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
 
@@ -37,7 +38,7 @@ def preprocess_api(supplied_midi_path, verbose=False):
     return encoded_api_song, reverse_transposition
 
 
-def undo_transpose(song, interval, verbose=False):
+def undo_transpose(song, interval, verbose=False) -> m21.stream.base.Score:
     """
     Un-Transposes a Music21 Stream from its generated key into the song's original key, as provided.
 
