@@ -1,9 +1,8 @@
-import PySimpleGUI
-
 from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose, encode_song
 import generator
 import music21 as m21
 from typing import Tuple, List, Any
+import os
 
 
 class GenerationError(Exception):
@@ -66,3 +65,14 @@ def undo_transpose(song, interval, verbose=False) -> m21.stream.base.Score:
     untransposed_song = song.transpose(interval)
 
     return untransposed_song
+
+
+def has_melody_generated(melody_id: str) -> bool:
+    """
+    Checks if the melody has been generated and saved.
+    :param melody_id: str The ID of the melody.
+    :return bool: True if the melody has been generated, False otherwise.
+    """
+
+    path = os.path.join("Generated Melodies", f"extended_melody_{melody_id}.mid")
+    return os.path.exists(path)

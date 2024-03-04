@@ -5,7 +5,11 @@ from training import MODEL_FILEPATH
 import numpy as np
 import music21 as m21
 
+
 MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
+
+
+
 
 
 def streamify_melody(melody, step_duration=0.25):
