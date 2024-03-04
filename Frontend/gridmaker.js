@@ -291,7 +291,7 @@ async function sendMessageAndDownload(base64MidiOutput) {
     
     // Periodically check processing status
   const pollForCompletion = setInterval(async () => {
-    const statusResponse = await fetch(`/check_status/${taskId}`);
+    const statusResponse = await fetch(`http://127.0.0.1:5000/check_status/${songId}`);
 
     if (statusResponse.ok) {
       const status = await statusResponse.text();
@@ -302,7 +302,7 @@ async function sendMessageAndDownload(base64MidiOutput) {
         //TODO: Download the file
 
       }  else { 
-        // Update progress UI?
+        console.log("Song is still processing...")
       }
     }
   }, 2000); // Check every 2 seconds
