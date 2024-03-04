@@ -1,4 +1,7 @@
+import PySimpleGUI
+
 from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose, encode_song
+import generator
 import music21 as m21
 from typing import Tuple, List, Any
 
@@ -6,16 +9,24 @@ from typing import Tuple, List, Any
 class GenerationError(Exception):
     """Exception raised for errors during AI generation."""
 
-    def __init__(self, message="Error during Music generation. Please Check that your input is valid."):
+    def __init__(self, message="An error has occurred During generation."):
         self.message = message
         super().__init__(self.message)
 
 
-def preprocess_api(supplied_midi_path, verbose=False) -> Tuple[List[int], m21.interval.Interval]:
+class InvalidNoteDurationError(Exception):
+    """Exception raised for note length issues."""
+
+    def __init__(self, message="The provided song contains an invalid Note length."):
+        self.message = message
+        super().__init__(self.message)
+
+
+def preprocess_api(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:
     """
     Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
 
-    :param supplied_midi_path: str, The directory of the file to preprocess.
+    :param midi_path: str, The directory of the file to preprocess.
     :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
 
     :return: tuple, (encoded_api_song, reverse_transposition),
@@ -23,11 +34,11 @@ def preprocess_api(supplied_midi_path, verbose=False) -> Tuple[List[int], m21.in
     """
 
     # Parse Supplied MIDI song.
-    api_supplied_song = m21.converter.parse(supplied_midi_path)
+    api_supplied_song = m21.converter.parse(midi_path)
 
     # Filter out songs with non-acceptable durations (only using 1/16, 1/8, 1/4, 1/2, 1 notes)
     if not has_acceptable_durations(api_supplied_song, ACCEPTABLE_DURATIONS, verbose):
-        raise Exception("The provided song contains an invalid Note length.")
+        raise InvalidNoteDurationError("The provided song contains an invalid Note length.")
 
     # Transpose Songs into Cmaj/Amin for standardisation
     api_supplied_song, reverse_transposition = transpose(api_supplied_song, verbose)

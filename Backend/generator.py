@@ -74,7 +74,7 @@ def sample_with_temperature(probability_distribution, temperature):
 
 class Generator:
 
-    def __init__(self, model_path) -> None:
+    def __init__(self, model_path: str) -> None:
         """
         Initialises the Music Generator by loading a trained model.
         :param model_path: str, Path of the saved model.
@@ -160,9 +160,10 @@ if __name__ == '__main__':
     generator = Generator(MODEL_FILEPATH)
     cheerful_seed = "60 62 60 62 _ 64 _ 62 _ 60 _ 67 _ 67 _ _ _ 65 _ 65 _ 64 _ _ _ 62 _ 62 _ 60 _ _ _"
     jodge_seed = "68 _ _ _ _ _ _ _ 70 _ _ _ 71 _ _ _ 71 _ _ _ 70 _ 68 _ _ _ _ _ _ _"
+    my_seed = "50 52 54 56 58 60 62 64 66 68 70 72 74 76 78"
     long_seed = "62 _ 62 _ 62 _ 64 _ _ _ 64 _ 64 _ 67 _ _ _ 67 _ _ _ 66 _ _ _ _ _ _ _ r _ _ _ _ _ _ _"
 
-    seed = long_seed
+    seed = my_seed
 
     melody = generator.generate_melody(seed=seed, number_of_steps=600, max_sequence_length=SEQUENCE_LENGTH,
                                        temperature=0.7)
