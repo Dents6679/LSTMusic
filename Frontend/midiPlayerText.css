@@ -1,0 +1,59 @@
+/* Custom player style */
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    
+    background-color: rgb(30, 30, 30);
+    white-space: nowrap;
+}
+
+#section3 midi-player {
+    display: block;
+    width: inherit;
+    ;
+    margin: 4px;
+    margin-bottom: 0;
+  }
+  #section3 midi-player::part(control-panel) {
+    background: rgb(50, 50, 50);
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 5px 5px 0 0;
+  }
+  #section3 midi-player::part(play-button) {
+    color: rgb(255, 255, 255);
+    
+    background-color: rgb(220, 174, 249);
+    border-radius: 5px;
+    transition: all 0.2s;
+    content: 'hello';
+  }
+  #section3 midi-player::part(play-button):hover {
+    color: rgb(255, 255, 255);
+    background-color: rgb(200, 127, 245);
+    border-radius: 5px;
+  }
+  #section3 midi-player::part(time) {
+    font-family: monospace;
+  }
+  
+  /* Custom visualizer style */
+  #section3 midi-visualizer .piano-roll-visualizer {
+    background: rgb(50, 50, 50);
+    border: 2px solid rgb(255, 255, 255);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    
+    margin: 4px;
+    margin-top: 0;
+    overflow: auto;
+  }
+  #section3 midi-visualizer svg rect.note {
+    stroke-width: 0;
+    fill: rgb(220, 174, 249);
+  }
+  
+  #section3 midi-visualizer svg rect.note.active {
+    opacity: 0.5;
+    stroke: #000;
+  }

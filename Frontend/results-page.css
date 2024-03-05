@@ -69,11 +69,11 @@ body {
 }
 
 .result-1-colour{
-    background-color: hsl(277, 86%, 83%);
+    background-color: rgb(220, 174, 249);
 }
 
 .result-1-colour:hover{
-    background-color: hsl(277, 86%, 73%);
+    background-color: rgb(200, 127, 245);
 }
 
 .result-2-colour{

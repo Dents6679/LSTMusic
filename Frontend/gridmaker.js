@@ -289,22 +289,7 @@ async function sendMessageAndWaitThenDownload(base64MidiOutput) {
     console.log(message)
     console.log(songId)
     
-    // Periodically check processing status
-  const pollForCompletion = setInterval(async () => {
-    const statusResponse = await fetch(`http://127.0.0.1:5000/check_status/${songId}`);
-
-    if (statusResponse.ok) {
-      const status = await statusResponse.text();
-      console.log(status)
-      if (status === 'complete') {
-        clearInterval(pollForCompletion); 
-        console.log("Song is ready to download")
-        //TODO: Download the file
-
-      }  else { 
-        console.log("Song is still processing...")
-      }
-    }
-  }, 2000); // Check every 2 seconds
+    //redirect to waiting page.
+    window.location.href = "waiting.html?songId=" + songId;
 
 }

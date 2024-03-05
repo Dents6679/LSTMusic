@@ -3,31 +3,52 @@ body {
     font-weight: bold;
     color: white;
     text-align: center;
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(30,30,30);
     white-space: nowrap;
 }
 
 #inner-text {
     position: absolute;
     border-radius: 5px;
-    padding: 1%;
+    font-size: 2vh;
+    padding: 3%;
     padding-top: 0%;
-    padding-bottom: 0%;
+    padding-bottom: 0;
+    margin-top: auto;
+    margin-bottom: 0%;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(30, 30, 30);
+    transform: translate(-50%, -120%);
+    background-color: #312f31;
+}
+
+h1{
+    margin-bottom: 1%;
+}
+
+#please-wait-text{
+    font-size: 1.5vh;
+    font-weight:lighter;
+    color: rgb(153, 153, 153);
+    padding-top: 0;
+    padding-bottom: 0%;
+    margin-top: 0%;
+
 }
 
 #loading-gif{
-    height: 5vh;
+    height: 16vh;
     padding-top: 0;
     padding-bottom: 2%;
 }
 
 #gen-id{
+    position:absolute;
+    bottom: 1%;
+    right:47%;
     font-size: 1vh;
-    text-align: left;
+    font-weight: normal;
+
     padding-top: 0;
     padding-bottom: 2%;
     
