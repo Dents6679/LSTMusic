@@ -257,7 +257,7 @@ async function sendFile(songData){
 async function sendGenerator() {
     
     let b64MidiOutput = String(encodeMusic(clickedTiles));
-    sendMessageAndDownload()
+    sendMessageAndWaitThenDownload()
     
      
     // let response = await sendFile(b64MidiOutput)
@@ -266,7 +266,7 @@ async function sendGenerator() {
 }
     
 
-async function sendMessageAndDownload(base64MidiOutput) {
+async function sendMessageAndWaitThenDownload(base64MidiOutput) {
     const encodedMidi = encodeMusic(clickedTiles);
 
     //send initial request

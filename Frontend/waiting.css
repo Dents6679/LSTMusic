@@ -7,3 +7,28 @@ body {
     white-space: nowrap;
 }
 
+#inner-text {
+    position: absolute;
+    border-radius: 5px;
+    padding: 1%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(30, 30, 30);
+}
+
+#loading-gif{
+    height: 5vh;
+    padding-top: 0;
+    padding-bottom: 2%;
+}
+
+#gen-id{
+    font-size: 1vh;
+    text-align: left;
+    padding-top: 0;
+    padding-bottom: 2%;
+    
+}
