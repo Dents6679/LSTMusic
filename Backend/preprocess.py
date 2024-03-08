@@ -9,11 +9,11 @@ from typing import List, Tuple, Any
 
 SEQUENCE_LENGTH = 64  # Represents the fixed length input which the LSTM will use.
 
-KERN_DATASET_PATH = "KERN"
-SINGLE_FILE_DATASET_PATH = "single file dataset"
-ENCODED_DATASET_DIR = "Encoded Dataset"
-NOTE_MAPPINGS_PATH = "Song Mappings/mappings.json"
-
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Disables Tensorflow's Debugging Information
+KERN_DATASET_PATH = "Dataset Resources/KERN"
+SINGLE_FILE_DATASET_PATH = "Dataset Resources/single file dataset"
+ENCODED_DATASET_DIR = "Dataset Resources/Encoded Dataset"
+NOTE_MAPPINGS_PATH = "Dataset Resources/Song Mappings/mappings.json"
 
 ACCEPTABLE_DURATIONS = [
     0.25,  # Sixteenth Note
@@ -26,7 +26,21 @@ ACCEPTABLE_DURATIONS = [
     4  # Whole note
 ]
 
+def file_exists(file_path) -> bool:
+    """
+    Checks if a file exists.
+    :param file_path: The file to check.
+    :return: If the file exists.
+    """
+    return os.path.exists(file_path)
 
+def has_files_within(directory_path) -> bool:
+    """
+    Checks if a directory contains any files.
+    :param directory_path: The directory to check.
+    :return: If the directory contains any files.
+    """
+    return len(os.listdir(directory_path)) > 0
 
 def load_songs(dataset_path, verbose=True) -> List[m21.stream.base.Score]:
     """
@@ -71,7 +85,6 @@ def has_acceptable_durations(song, acceptable_durations, verbose=True) -> bool:
         if note.duration.quarterLength not in acceptable_durations:
             if verbose: print("A Song has been discarded as it contains illegal durations")
             return False
-    if verbose: print("Song does not contain any illegal durations")
     return True
 
 
@@ -144,9 +157,9 @@ def encode_song(song, time_step=0.25, verbose=False) -> str:
                 encoded_song.append("_")
 
     # Cast encoded song into a string
-    encoded_song = " ".join(map(str, encoded_song))
+    encoded_song_string = " ".join(map(str, encoded_song))
 
-    return encoded_song
+    return encoded_song_string
 
 
 def preprocess(dataset_path, output_path, verbose=False) -> None:
@@ -158,6 +171,15 @@ def preprocess(dataset_path, output_path, verbose=False) -> None:
     :param output_path: str, The directory where the encoded songs will be written.
     :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
     """
+
+    # Check if there is an existing pre-processed dataset.
+
+    if has_files_within(output_path):
+        check_if_overwriting = input(f"An existing preprocessed dataset containing {len(os.listdir(output_path))} files has been found.\nWould you like to use it? (y/n):\n ")
+        if check_if_overwriting.lower() != "n":
+            print("Using existing dataset...")
+            return
+
 
     # Load Data
     songs = load_songs(dataset_path)
@@ -193,7 +215,8 @@ def load(file_path) -> str:
     return song
 
 
-def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_length, save=False, verbose=False) -> str:
+def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_length, save=False,
+                                   verbose=False) -> str:
     """
     Flattens multiple files in a time series string representation into a single String File,
     saving the file while doing so.
@@ -206,6 +229,15 @@ def flatten_dataset_to_single_file(encoded_dataset_path, output_path, sequence_l
 
     :return songs: str, The flattened dataset.
     """
+
+    # Check if there is an existing pre-processed dataset.
+
+    if file_exists(output_path):
+        check_if_overwriting = input("A pre-existing flattened dataset has been found."
+                                     "\nWould you like to use it? (y/n):\n")
+        if check_if_overwriting.lower() != "n":
+            print("Loading existing flattened dataset...")
+            return load(output_path)
 
     if verbose:
         print("Started song flattening...")
@@ -365,13 +397,16 @@ def generate_training_sequences(sequence_length, songs_dataset_string=None, mapp
 
 def main():
     # Preprocess and save the dataset
-    # preprocess(dataset_path=KERN_DATASET_PATH, output_path=SAVE_DIR, verbose=True)
+    preprocess(dataset_path=KERN_DATASET_PATH,
+               output_path=ENCODED_DATASET_DIR,
+               verbose=True)
     # Flatten dataset
     flattened_dataset = flatten_dataset_to_single_file(encoded_dataset_path=ENCODED_DATASET_DIR,
                                                        output_path=SINGLE_FILE_DATASET_PATH,
                                                        sequence_length=SEQUENCE_LENGTH, save=True, verbose=True)
     # Create integer mappings for all symbols from the flattened dataset.
-    song_mappings = create_song_mappings(flattened_songs=flattened_dataset, mapping_path=NOTE_MAPPINGS_PATH,
+    song_mappings = create_song_mappings(flattened_songs=flattened_dataset,
+                                         mapping_path=NOTE_MAPPINGS_PATH,
                                          verbose=True)
     # Create Inputs and Targets for the LSTM to use.
     inputs, targets, vocab_size = generate_training_sequences(sequence_length=SEQUENCE_LENGTH,

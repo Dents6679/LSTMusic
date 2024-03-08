@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" content="width=device-width, initial-scale=1.0">
+        <title>Melody Player</title>
+        <link rel="stylesheet" href="results.css">
+        
+        
+    </head>
+
+    <body>
+        <h1>Results</h1>
+        
+
+        <section id="section1">
+            <h2>Melody 1</h2>
+            
+            <midi-player 
+                id="midi-player-1" 
+                sound-font visualizer="#section1 midi-visualizer">
+            </midi-player>
+            
+            <midi-visualizer 
+                id="midi-visualizer-1">
+            </midi-visualizer>
+        </section>
+
+        <section id="section2">
+            <h2>Melody 2</h2>
+            
+            <midi-player 
+                id="midi-player-2" 
+                sound-font visualizer="#section2 midi-visualizer">
+            </midi-player>
+            
+            <midi-visualizer 
+                id="midi-visualizer-2">
+            </midi-visualizer>
+        </section>
+
+
+
+
+    <script 
+        src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0">
+    </script>    
+    <script 
+        src="results.js">
+    </script>
+
+    </body>

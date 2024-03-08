@@ -218,13 +218,16 @@ function playMusic(boolBoard) {
     playSlide();
 }
 
+
+
+
 /**
  * Sends Inputted melody to the backend. (needs changing and updating)
  * @param {string} songData - the data to be sent to the backend.
  * @returns the response from the backend in JSON format. 
  */
 async function sendFile(songData){
-    console.log("Sending Fetch Request to API...");
+    console.log("Sending song to API");
     try{
         const response = await fetch('http://127.0.0.1:5000/generate_melody',
             {   method: 'POST',
@@ -239,21 +242,54 @@ async function sendFile(songData){
     catch(error){
         console.log("Error while trying to fetch data.: " + error)
     }
+
+    
     console.log("Response Received")
-    setTimeout(function(){
-        window.location.href = "http://127.0.0.1:5000/waiting.html"
-    }, 10000)
+    
+    
     
 }
+
 
 /**
  * Sends Inputted melody to the backend. (needs changing and updating)
  */
 async function sendGenerator() {
-    let b64MidiOutput = String(encodeMusic(clickedTiles));
     
-    response = await sendFile(b64MidiOutput)
-    console.log('Response is: ' + response)
+    let b64MidiOutput = String(encodeMusic(clickedTiles));
+    sendMessageAndWaitThenDownload()
+    
+     
+    // let response = await sendFile(b64MidiOutput)
+    // console.log('Response is: ' + response)
        
 }
     
+
+async function sendMessageAndWaitThenDownload(base64MidiOutput) {
+    const encodedMidi = encodeMusic(clickedTiles);
+
+    //send initial request
+    const response = await fetch('http://127.0.0.1:5000/generate_melody', {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain',},
+        body: encodedMidi
+        });
+
+    if (!response.ok){
+        throw new Error('Network response was not ok');
+    }
+
+    // Get Processing task ID used in file name).
+    const responseText = await response.text();
+    const responseObject = JSON.parse(responseText);
+    const responseMessages = responseObject.message.split(';');
+    const message = responseMessages[0];
+    const songId = responseMessages[1];
+    console.log(message)
+    console.log(songId)
+    
+    //redirect to waiting page.
+    window.location.href = "waiting.html?songId=" + songId;
+
+}
