@@ -77,23 +77,23 @@ body {
 }
 
 .result-2-colour{
-    background-color: hsl(47, 86%, 78%);
+    background-color: rgb(247, 226, 151);
 }
 
 .result-2-colour:hover{
-    background-color: hsl(47, 86%, 68%);
+    background-color: rgb(244, 213, 103);
 }
 
 .result-3-colour{
-    background-color: hsl(0, 86%, 83%);
+    background-color: rgb(249, 174, 174);
 }
 
 .result-3-colour:hover{
-    background-color: hsl(0, 86%, 73%);
+    background-color: rgb(245, 127, 127);
 }
 
 .original-colour{
-    background-color: #ADF9C2;
+    background-color: rgb(173, 249, 194);
 }
 
 

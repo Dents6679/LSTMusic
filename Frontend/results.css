@@ -1,0 +1,101 @@
+/*General style for player and visualizers */
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    
+    background-color: rgb(30, 30, 30);
+    white-space: nowrap;
+}
+
+midi-player {
+  display: block;
+  width: inherit;
+  ;
+  margin: 4px;
+  margin-bottom: 0;
+}
+
+midi-player::part(time) {
+  font-family: monospace;
+}
+
+midi-player::part(control-panel) {
+  background: rgb(50, 50, 50);
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 5px 5px 0 0;
+}
+
+midi-visualizer .piano-roll-visualizer {
+  background: rgb(50, 50, 50);
+  border: 2px solid rgb(255, 255, 255);
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  
+  margin: 4px;
+  margin-top: 0;
+  overflow: auto;
+}
+
+/* Custom play button & note colour styles */
+
+
+:root{
+  --section-1-colour: rgb(220, 174, 249);
+  --section-1-colour-hover: rgb(200, 127, 245);
+  --section-2-colour: rgb(247, 226, 151);
+  --section-2-colour-hover: rgb(244, 213, 103);
+  --section-3-colour: rgb(249, 174, 174);
+  --section-3-colour-hover: rgb(245, 127, 127);
+}
+
+
+#section1 midi-player::part(play-button) {
+  color: rgb(255, 255, 255);
+  
+  background-color: var(--section-1-colour);
+  border-radius: 5px;
+  transition: all 0.2s;
+  content: 'hello';
+}
+
+#section1 midi-player::part(play-button):hover {
+  color: rgb(255, 255, 255);
+  background-color: var(--section-1-colour-hover);
+  border-radius: 5px;
+}
+
+#section1 midi-visualizer svg rect.note {
+  stroke-width: 0;
+  fill: var(--section-1-colour);
+}
+
+#section1 midi-visualizer svg rect.note.active {
+  opacity: 0.5;
+  stroke: #000;
+}
+
+#section2 midi-player::part(play-button) {
+  color: rgb(255, 255, 255);
+  
+  background-color: var(--section-2-colour);
+  border-radius: 5px;
+  transition: all 0.2s;
+  content: 'hello';
+}
+
+#section2 midi-player::part(play-button):hover {
+  color: rgb(255, 255, 255);
+  background-color: var(--section-2-colour-hover);
+  border-radius: 5px;
+}
+
+#section2 midi-visualizer svg rect.note {
+  stroke-width: 0;
+  fill: var(--section-2-colour  );
+}
+
+#section2 midi-visualizer svg rect.note.active {
+  opacity: 0.5;
+  stroke: #000;
+}

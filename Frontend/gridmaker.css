@@ -8,6 +8,16 @@ body {
     white-space: nowrap;
 }
 
+h1{
+    margin-bottom: 0.5%;
+}
+h4{
+    font-size: small;
+    margin-top: 0;
+    font-weight: lighter;
+    color: rgb(153, 153, 153);
+}
+
 #piano-alligner {
     width: 80vw; /* Adjust the width as needed */
     height: 55vh; /* Adjust the height as needed */
