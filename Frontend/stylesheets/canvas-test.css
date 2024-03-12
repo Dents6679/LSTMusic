@@ -1,0 +1,128 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(30, 30, 30);
+    white-space: nowrap;
+}
+
+h1{
+    position: absolute;
+    font-size: 3vh;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+h4{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: lighter;
+    color: #464646;
+
+
+}
+
+webaudio-pianoroll{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%)
+}
+
+
+#generate-button {
+    position:absolute;
+    top: 81%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10%;
+    height: 5%;
+    font-size: 2vh;
+
+    color: white;
+    font-weight: bold;
+    background-color: #6200EE;
+    border: none;
+    border-radius: 3px;
+
+}
+
+#clear-button{
+    position:absolute;
+    top: 75%;
+    left: 42.5%;
+    transform: translate(-50%, -50%);
+    width: 10%;
+    height: 5%;
+    font-size: 2vh;
+
+    color: white;
+    font-weight: bold;
+    background-color: hsl(40, 100%, 47%);
+    border: none;
+    border-radius: 3px;
+
+}
+
+#clear-button:hover{
+    background-color: hsl(40, 100%, 38%);
+}
+
+#generate-button:hover {
+    background-color: hsl(265, 100%, 38%);
+}
+
+#play-button {
+    position:absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 4%;
+    height: 5%;
+    font-size: 2.1vh;
+
+    color: white;
+    font-weight: bold;
+    background-color: hsl(13, 100%, 47%);
+    border: none;
+    border-radius: 3px;
+}
+
+#play-button:hover {
+    background-color: hsl(13, 100%, 38%);
+}
+
+
+#temp-container {
+    position:absolute;
+    top: 75%;
+    left: 57.5%;
+    transform: translate(-50%, -50%);
+
+    width: 10%;
+    height: 5%;
+    float: right;
+    border-radius: 4px;
+    background-color: #464646;
+}
+
+#temp-readout {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 1.7vh;
+}
+
+#temp-slider {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 80%; /* Full-width */
+    height: 5%;
+}
