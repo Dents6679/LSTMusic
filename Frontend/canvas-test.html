@@ -6,6 +6,7 @@
         <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="stylesheets/canvas-test.css">
         <script src="https://g200kg.github.io/webaudio-pianoroll/webaudio-pianoroll.js"></script>
+
         <script type="module" src="scripts/canvas-test.js"></script>
     </head>
     <body>
@@ -24,14 +25,14 @@
 
                     <button type=button id="generate-button" title="Expand your inputted melody">Expand!</button>
 
-                    <button id="clear-button" title="Clear your inputted melody">Clear</button>
+                    <button id="clear-button" title="Clear your inputted melody">Reset</button>
 
                     <div id="temp-container">
                         <div id="temp-readout">
                             Temperature: <span id="temp-number"></span>
                         </div>
                         <div>
-                            <input type="range" min="60" max="240" value="120" id="temp-slider">
+                            <input type="range" min="0" max="100" value="60" id="temp-slider">
 
                         </div>
                     </div>

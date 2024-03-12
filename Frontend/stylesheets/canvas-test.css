@@ -39,7 +39,7 @@ webaudio-pianoroll{
     transform: translate(-50%, -50%);
     width: 10%;
     height: 5%;
-    font-size: 2vh;
+    font-size: min(2vh, 2.2vw);
 
     color: white;
     font-weight: bold;
@@ -56,7 +56,8 @@ webaudio-pianoroll{
     transform: translate(-50%, -50%);
     width: 10%;
     height: 5%;
-    font-size: 2vh;
+    font-size: min(2vh, 2.4vw);
+
 
     color: white;
     font-weight: bold;
@@ -82,7 +83,7 @@ webaudio-pianoroll{
 
     width: 4%;
     height: 5%;
-    font-size: 2.1vh;
+    font-size: min(2.1vh, 2.3vw);
 
     color: white;
     font-weight: bold;
@@ -101,20 +102,25 @@ webaudio-pianoroll{
     top: 75%;
     left: 57.5%;
     transform: translate(-50%, -50%);
-
     width: 10%;
     height: 5%;
     float: right;
+    font-size: min(1.7vh,0.9vw);
     border-radius: 4px;
     background-color: #464646;
 }
 
 #temp-readout {
     position: absolute;
-    top: 30%;
-    left: 40%;
-    transform: translate(-50%, -50%);
-    font-size: 1.7vh;
+    top: 8%;
+    left: 10%;
+
+
+}
+
+#temp-number{
+    font-family: monospace;
+    font-weight: normal;
 }
 
 #temp-slider {

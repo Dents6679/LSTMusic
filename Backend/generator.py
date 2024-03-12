@@ -10,8 +10,6 @@ MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
 
 
 
-
-
 def streamify_melody(melody, step_duration=0.25):
     """
     De-encodes a Time Series String into an M21 Stream object.
