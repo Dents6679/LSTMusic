@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" content="width=device-width, initial-scale=1.0">
+        <title>Canvas Test</title>
+        <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="stylesheets/canvas-test.css">
+        <script src="https://g200kg.github.io/webaudio-pianoroll/webaudio-pianoroll.js"></script>
+
+        <script type="module" src="scripts/canvas-test.js"></script>
+    </head>
+    <body>
+        <div id="title-text">
+            <h1>LSTMusic</h1>
+            <h4>An AI Melody Extender</h4>
+        </div>
+
+        <div id="piano-roll-area">
+       <webaudio-pianoroll id="piano-roll">
+       </webaudio-pianoroll>
+        </div>
+        <div id="lower-screen-area ">
+                <div id="buttons">
+                    <button id="play-button" title="Play inputted melody">▶</button>
+
+                    <button type=button id="generate-button" title="Expand your inputted melody">Expand!</button>
+
+                    <button id="clear-button" title="Clear your inputted melody">Reset</button>
+
+                    <div id="temp-container">
+                        <div id="temp-readout">
+                            Temperature: <span id="temp-number"></span>
+                        </div>
+                        <div>
+                            <input type="range" min="0" max="100" value="60" id="temp-slider">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+    </body>
+</html>
