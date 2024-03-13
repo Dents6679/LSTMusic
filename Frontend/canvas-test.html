@@ -12,29 +12,47 @@
     <body>
         <div id="title-text">
             <h1>LSTMusic</h1>
-            <h4>An AI Melody Extender</h4>
+            <h4>An AI Melody Extender by <a href="https://GitHub.com/Dents6679">Dents6679</a></h4>
         </div>
+        <div id="info">
+
+                <a href="https://GitHub.com/Dents6679/LSTMusic">[Source code]</a>
+        </div>
+
 
         <div id="piano-roll-area">
        <webaudio-pianoroll id="piano-roll">
        </webaudio-pianoroll>
         </div>
-        <div id="lower-screen-area ">
+        <div id="lower-screen-area">
                 <div id="buttons">
-                    <button id="play-button" title="Play inputted melody">▶</button>
+                    <div id="playback-controls">
+                        <button id="back-button" title="Reset the playhead to the start."> |< </button>
+                        <button id="play-button" title="Play inputted melody.">▶</button>
+                        <button id="loop-button" title="Loop inputted melody.">🔁</button>
+
+                    </div>
 
                     <button type=button id="generate-button" title="Expand your inputted melody">Expand!</button>
 
                     <button id="clear-button" title="Clear your inputted melody">Reset</button>
 
-                    <div id="temp-container">
+                    <div id="temp-container" class="param-container">
                         <div id="temp-readout">
                             Temperature: <span id="temp-number"></span>
                         </div>
                         <div>
                             <input type="range" min="0" max="100" value="60" id="temp-slider">
-
                         </div>
+                    </div>
+                    <div id="len-container" class="param-container">
+                        <div id="len-readout">
+                            Extend by: <span id="len-number"></span> bars
+                        </div>
+                        <div>
+                            <input type="range" min="2" max="8" value="4" id="len-slider">
+                        </div>
+
                     </div>
                 </div>
 

@@ -1,14 +1,12 @@
 # <u>LSTMusic</u>
 ## What is LSTMusic?
+LSTMusic is a web application that uses machine learning techniques to extend melodies. 
+It was created as part of my final year University Project.
 
----
-My Final year University Project.
-
-Takes a melody, does a bit of AI magic, and spits it out quite a bit longer!
+In other words,  it takes a melody, does a bit of AI magic, and spits something a bit longer out!
 
 ## Usage
 
----
 Visit [LSTMusic]().
 
 I've aimed for the site to be as self-explanatory as possible, but here's a quick guide if you're struggling:
@@ -20,13 +18,11 @@ I've aimed for the site to be as self-explanatory as possible, but here's a quic
 ## Special Thanks
 Turns out other people are much better at making certain things than I am, despite my best efforts.
 
-
 This project would not have been possible without the following libraries, frameworks and online resources:
 ### Frontend
 - [GitHub Pages](https://pages.github.com/) - A free hosting service provided by GitHub.
 - [WebAudio-PianoRoll](https://github.com/g200kg/webaudio-pianoroll) - A JavaScript library for creating interactive piano roll interfaces.
 - [html-midi-player](https://github.com/cifkao/html-midi-player) - A JavaScript library for playing & displaying MIDI files in the browser.
-
 
 ### Backend
 - [TensorFlow](https://www.tensorflow.org/) - An open-source machine learning library which I've used.
@@ -37,8 +33,6 @@ This project would not have been possible without the following libraries, frame
 - [Flask](https://flask.palletsprojects.com/en/2.0.x/) - The Python web framework used.
 
 ## FAQ.
-
----
 
 ### Where does the name 'LSTMusic' come from?
 LSTMusic derives its name from LSTM, which stands for Long Short-Term Memory, a type of Recurrent Neural Network used in this project for music generation.
@@ -51,8 +45,6 @@ frontend dev, backend development, API design, and deployment.
 us, I believe that this project is a good reflection of the skills and knowledge I have acquired during my course.
 
 ## Limitations
-
----
 
 - Polyphonic melodies aren't supported, so songs with only one note at a time can be inputted and extended.
 - Generated music is not guaranteed to be musically coherent or pleasant to listen to.

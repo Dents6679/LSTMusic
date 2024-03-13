@@ -53,6 +53,11 @@ pianoRoll.redraw();
 
 //       ------ Code! -------
 
+// -- Some test code --
+// hello. I'm a comment.
+
+// -- End of test code --
+
 let temperature = 0.6 //set default temperature to 0.6
 let isPlaying = false; //set default playing state to false
 
@@ -73,13 +78,39 @@ function updateRollSize() {
 }
 
 // Handle temperature slider
-let slider = document.getElementById("temp-slider"); //fetch slider object
-let output = document.getElementById("temp-number"); //fetch output text
-output.innerHTML = String(Number(slider.value)/100); // Display the default slider value
-slider.oninput = function () { output.innerHTML = String(Number(this.value/100)); temperature = Number(this.value/100) } //update readout whenever it's changed.
+let tempSlider = document.getElementById("temp-slider"); //fetch temp slider object
+let tempOutput = document.getElementById("temp-number"); //fetch temp output text
+tempOutput.innerHTML = String(Number(tempSlider.value)/100); // Display the default temp slider value
+tempSlider.oninput = function () { tempOutput.innerHTML = String(Number(this.value/100)); temperature = Number(this.value/100) } //update readout whenever it's changed.
 
-// Handle play/pause button
+// Handle length slider
+let lenSlider = document.getElementById("len-slider"); //fetch slider object
+let lenOutput = document.getElementById("len-number"); //fetch output text
+lenOutput.innerHTML = lenSlider.value; // Display the default slider value
+lenSlider.oninput = function () { lenOutput.innerHTML = this.value } //update readout whenever it's changed.
+
+
+
+// Handle play/pause button & space bar presses.
 document.getElementById("play-button").addEventListener("click", () => playPause()) //add event listener to play/pause button
+
+document.addEventListener("keydown", debounce(function(event) {
+    if (event.code === "Space") {
+        playPause();
+    }
+}, 200)); //debounce spacebar presses to prevent accidental double presses
+
+
+function debounce(func, delay) {
+    let debounceTimer;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    }
+}
+
 function playPause(){
 
     if(isPlaying){
@@ -96,6 +127,10 @@ function playPause(){
 
     isPlaying = !isPlaying;
 }
+
+
+
+
 
 
 //TODO: Change this callback function to play a piano-like sound.
@@ -123,8 +158,8 @@ function clearBoard(){
     pianoRoll.setMMLString("");
     pianoRoll.cursor = 0;
     temperature = 0.6;
-    slider.value = 60;
-    output.innerHTML = "0.6";
+    tempSlider.value = 60;
+    tempOutput.innerHTML = "0.6";
 
 
     if(isPlaying){
