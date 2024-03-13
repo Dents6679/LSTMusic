@@ -6,7 +6,7 @@ from flask_cors import CORS
 from generator import Generator, streamify_melody
 from training import MODEL_FILEPATH
 from preprocess import SEQUENCE_LENGTH
-from api_tools import preprocess_api, undo_transpose, GenerationError, has_melody_generated
+from api_tools import preprocess_api_midi, undo_transpose, GenerationError, has_melody_generated
 import time
 
 UPLOAD_FOLDER_PATH = "Uploaded_files"
@@ -30,7 +30,7 @@ def generate_to_server(base_file_path, file_number) -> NoReturn:
 
     print("Generating Melody, please wait...")
     try:
-        supplied_seed, reverse_transposition = preprocess_api(base_file_path)
+        supplied_seed, reverse_transposition = preprocess_api_midi(base_file_path)
         generated_melody = generator.generate_melody(seed=supplied_seed,
                                                      number_of_steps=400,
                                                      # TODO: Make variables temperature and number_of_steps changeable from the frontend.

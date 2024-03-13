@@ -1,7 +1,6 @@
 from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose, encode_song
-import generator
 import music21 as m21
-from typing import Tuple, List, Any
+from typing import Tuple
 import os
 
 
@@ -21,7 +20,30 @@ class InvalidNoteDurationError(Exception):
         super().__init__(self.message)
 
 
-def preprocess_api(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:
+def preprocess_api_mml(mml: str, verbose=False) -> Tuple[str, m21.interval.Interval]:
+    """
+    Preprocesses a single supplied MML Song into a file, typically supplied from the Flask API.
+
+    :param mml: str, The MML string to preprocess.
+    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
+
+    :return:
+    """
+    # TODO: Finish this function
+    # Sample MML: t120o4l8r1b16
+    tempo = mml[0:3]
+    octave = mml[3:5]
+    note_length = mml[5:7]
+    note_sequence = mml[7:]
+
+    note_length_conversions = {
+        1: "_ "*15,
+        2: "_ "*7,
+
+    }
+
+
+def preprocess_api_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:
     """
     Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
 
@@ -39,7 +61,7 @@ def preprocess_api(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval
     if not has_acceptable_durations(api_supplied_song, ACCEPTABLE_DURATIONS, verbose):
         raise InvalidNoteDurationError("The provided song contains an invalid Note length.")
 
-    # Transpose Songs into Cmaj/Amin for standardisation
+    # Transpose Songs into CMaj/Amin for standardisation
     api_supplied_song, reverse_transposition = transpose(api_supplied_song, verbose)
 
     # Encode songs with music time series representation

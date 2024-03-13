@@ -190,8 +190,7 @@ function backToStart(){
 document.getElementById("generate-button").addEventListener("click", expandMelody) //add event listener to generate button
 function expandMelody(){
     let mml = pianoRoll.getMMLString();
-    console.log(mml)
-    //TODO: Find a way to convert mml to midi
-    //TODO: Send Midi to backend to generate a new melody
+    console.log(mml.slice(8))
+    //TODO: Send song to Backend to generate melody
 
 }

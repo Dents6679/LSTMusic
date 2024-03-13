@@ -1,6 +1,6 @@
 songId = location.search.split('songId=')[1];
 
-//TODO: display generation id on page.
+
 document.getElementById('generation-id').textContent = songId; 
 
 // Poll the server every 2 seconds to check if the song is ready to download.

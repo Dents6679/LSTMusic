@@ -5,7 +5,7 @@ import PySimpleGUI as sg
 from generator import Generator, streamify_melody, MIDI_OUTPUT_PATH
 from training import MODEL_FILEPATH
 from preprocess import SEQUENCE_LENGTH
-from api_tools import preprocess_api, undo_transpose, GenerationError, InvalidNoteDurationError
+from api_tools import preprocess_api_midi, undo_transpose, GenerationError, InvalidNoteDurationError
 import time
 
 
@@ -16,7 +16,7 @@ def handle_local_submission(midi_path: str, output_path: str, temperature: float
     extension_length = extension_length_in_bars # TODO: Figure out what to multiply this by to make it work with LSTM.
     # Parse file
     try:
-        supplied_seed, reverse_transposition = preprocess_api(midi_path=midi_path, verbose=True)
+        supplied_seed, reverse_transposition = preprocess_api_midi(midi_path=midi_path, verbose=True)
     except Exception as e:
         print("Error parsing file")
         raise e
