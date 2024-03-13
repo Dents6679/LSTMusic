@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" content="width=device-width, initial-scale=1.0">
+        <title>Melody Maker</title>
+        <link rel="icon" href="frontend-assets/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="stylesheets/old.css">
+        <script type="module" src="scripts/old.js"></script>
+    </head>
+
+    <body> 
+        <h1>LSTMusic</h1>
+        <h4>An AI Melody Extender</h4>
+        <div id="piano-alligner">
+            <div id="piano-keys">
+                <!--Keys on the left of the piano-->
+                <div class="black-key">G# &ensp;</div>
+                <div class="white-key">G&ensp;</div>
+                <div class="black-key">F#&ensp;</div>
+                <div class="white-key">F&ensp;</div>
+                <div class="white-key">E&ensp;</div>
+                <div class="black-key">D#&ensp;</div>
+                <div class="white-key">D&ensp;</div>
+                <div class="black-key">C#&ensp;</div>
+                <div class="white-key">C&ensp;</div>
+                <div class="white-key">B&ensp;</div>
+                <div class="black-key">A#&ensp;</div>
+                <div class="white-key">A&ensp;</div>
+                <div class="black-key">G#&ensp;</div>
+                <div class="white-key">G&ensp;</div>
+                <div class="black-key">F#&ensp;</div>
+                <div class="white-key">F&ensp;</div>
+                <div class="white-key">E&ensp;</div>
+                <div class="black-key">D#&ensp;</div>
+                <div class="white-key">D&ensp;</div>
+                <div class="black-key">C#&ensp;</div>
+                <div class="white-key">C&ensp;</div>
+                <div class="white-key">B&ensp;</div>
+                <div class="black-key">A#&ensp;</div>
+                <div class="white-key">A&ensp;</div>
+
+            </div>
+            <div id="roll">
+            <!-- Pressable Notes are generated here through JS -->
+            </div>
+        </div>
+        <br>
+        <div id="lower-screen-area ">
+            <div id="buttons">
+                <button id="play-button" title="Play inputted melody">▶</button>  
+
+                <button type=button id="generate-button" title="Generate melody">Generate Melodies</button>
+                
+                <button id="clear-button" title="Clear Melody">Clear</button>
+
+                
+                <div id="bpm-container">
+                    <div id="bpm-readout">
+                        BPM = <span id="bpm-number"></span>
+                    </div>
+                    <div>
+                        <input type="range" min="60" max="240" value="120" id="bpm-slider">
+                        
+                    </div> 
+                </div>
+            </div>
+
+        </div>
+
+
+    </body>
+
+
+
+
+    <!-- Note Audio files -->
+    <audio id="A">
+        <source src="frontend-assets/notes/Note-01.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="A#">
+        <source src="frontend-assets/notes/Note-02.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="B">
+        <source src="frontend-assets/notes/Note-03.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="C">
+        <source src="frontend-assets/notes/Note-04.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="C#">
+        <source src="frontend-assets/notes/Note-05.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="D">
+        <source src="frontend-assets/notes/Note-06.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="D#">
+        <source src="frontend-assets/notes/Note-07.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="E">
+        <source src="frontend-assets/notes/Note-08.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="F">
+        <source src="frontend-assets/notes/Note-09.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="F#">
+        <source src="frontend-assets/notes/Note-10.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="G">
+        <source src="frontend-assets/notes/Note-11.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="G#">
+        <source src="frontend-assets/notes/Note-12.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="A1">
+        <source src="frontend-assets/notes/Note-13.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="A#1">
+        <source src="frontend-assets/notes/Note-14.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="B1">
+        <source src="frontend-assets/notes/Note-15.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="C1">
+        <source src="frontend-assets/notes/Note-16.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="C#1">
+        <source src="frontend-assets/notes/Note-17.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="D1">
+        <source src="frontend-assets/notes/Note-18.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="D#1">
+        <source src="frontend-assets/notes/Note-19.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="E1">
+        <source src="frontend-assets/notes/Note-20.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="F1">
+        <source src="frontend-assets/notes/Note-21.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="F#1">
+        <source src="frontend-assets/notes/Note-22.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="G1">
+        <source src="frontend-assets/notes/Note-23.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="G#1">
+        <source src="frontend-assets/notes/Note-24.mp3" type="audio/mpeg">
+    </audio>
+    
+    
+</html>
