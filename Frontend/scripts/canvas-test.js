@@ -19,6 +19,7 @@ pianoRoll.editmode = "dragmono" //ensure that the user can only draw one note at
 pianoRoll.xrange = 64; //number of ticks available to play/set.
 pianoRoll.yrange = 24; //set number of available notes to play
 pianoRoll.grid = 8; // setting grid size for grid to be consistent with note length(s).
+pianoRoll.loop = 0; //set loop to false by default
 
 pianoRoll.markstart = 0;
 pianoRoll.markend = 64;
@@ -45,7 +46,7 @@ pianoRoll.colrulerbg = "#1e1e1e" // ruler background
 pianoRoll.colrulerborder = "#1e1e1e00" // ruler border
 pianoRoll.colrulerfg = "#fff" // ruler text
 
-// ------ Playhead ------
+// ------  ------
 pianoRoll.preload = 2; //preload audio
 pianoRoll.redraw();
 
@@ -88,7 +89,6 @@ let lenSlider = document.getElementById("len-slider"); //fetch slider object
 let lenOutput = document.getElementById("len-number"); //fetch output text
 lenOutput.innerHTML = lenSlider.value; // Display the default slider value
 lenSlider.oninput = function () { lenOutput.innerHTML = this.value } //update readout whenever it's changed.
-
 
 
 // Handle play/pause button & space bar presses.
@@ -153,8 +153,8 @@ function playMelody() {
 
 
 // Handle Reset button
-document.getElementById("clear-button").addEventListener("click", clearBoard) //add event listener to board clearing button
-function clearBoard(){
+document.getElementById("clear-button").addEventListener("click", clearRoll) //add event listener to board clearing button
+function clearRoll(){
     pianoRoll.setMMLString("");
     pianoRoll.cursor = 0;
     temperature = 0.6;
@@ -170,6 +170,21 @@ function clearBoard(){
     }
 
 }
+
+// Handle Back to start Button
+document.getElementById("back-button").addEventListener("click", backToStart)
+
+function backToStart(){
+    pianoRoll.cursor = 0;
+    if(isPlaying){
+        pianoRoll.stop();
+        actx.suspend();
+        document.getElementById("play-button").innerHTML = "▶";
+        isPlaying = false;
+    }
+
+}
+
 
 // Handle Generate button
 document.getElementById("generate-button").addEventListener("click", expandMelody) //add event listener to generate button

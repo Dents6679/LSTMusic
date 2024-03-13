@@ -42,17 +42,6 @@ a:active {
     text-decoration: underline;
 }
 
-/*#lower-screen-area{*/
-/*    position: absolute;*/
-/*    top: 66%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%);*/
-/*    width: 82%;*/
-/*    height: 25%;*/
-/*    border-radius: 4px;*/
-/*    background-color: #282828;*/
-
-/*}*/
 
 #info{
     position: absolute;
@@ -158,26 +147,7 @@ webaudio-pianoroll{
     background-color: hsl(13, 100%, 38%);
 }
 
-#loop-button {
-    position:absolute;
-    top: 69%;
-    left: 54.5%;
-    transform: translate(-50%, -50%);
 
-    width: 4%;
-    height: 5%;
-    font-size: min(2.1vh, 2.3vw);
-
-    color: white;
-    font-weight: bold;
-    background-color: hsl(13, 100%, 47%);
-    border: none;
-    border-radius: 3px;
-}
-
-#loop-button:hover {
-    background-color: hsl(13, 100%, 38%);
-}
 
 
 .param-container{
