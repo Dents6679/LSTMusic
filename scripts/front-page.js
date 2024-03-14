@@ -16,13 +16,16 @@ pianoRoll.kbwidth = width * 0.08; //width of the keyboard
 
 //      ------ Technical ------
 pianoRoll.editmode = "dragmono" //ensure that the user can only draw one note at a time
-pianoRoll.xrange = 64; //number of ticks available to play/set.
+pianoRoll.xrange = 32; //number of ticks available to play/set.
 pianoRoll.yrange = 24; //set number of available notes to play
-pianoRoll.grid = 8; // setting grid size for grid to be consistent with note length(s).
+pianoRoll.grid = 4; // setting grid size for grid to be consistent with note length(s).
+pianoRoll.timebase = 8 // Set timebase to 8. minimum note length is 1/8th of a note.
 pianoRoll.loop = 0; //set loop to false by default
 
+pianoRoll.tempo = 120; //set tempo to 120 by default
+
 pianoRoll.markstart = 0;
-pianoRoll.markend = 64;
+pianoRoll.markend = 32;
 pianoRoll.xruler = height * 0.02;
 pianoRoll.yruler = width * 0.02;
 
@@ -89,6 +92,14 @@ let lenSlider = document.getElementById("len-slider"); //fetch slider object
 let lenOutput = document.getElementById("len-number"); //fetch output text
 lenOutput.innerHTML = lenSlider.value; // Display the default slider value
 lenSlider.oninput = function () { lenOutput.innerHTML = this.value } //update readout whenever it's changed.
+
+// Handle tempo slider
+let tempoSlider = document.getElementById("bpm-slider"); //fetch slider object
+let tempoOutput = document.getElementById("bpm-number"); //fetch output text
+tempoOutput.innerHTML = tempoSlider.value; // Display the default slider value
+tempoSlider.oninput = function () { tempoOutput.innerHTML = this.value; pianoRoll.tempo = this.value } //update readout whenever it's changed.
+pianoRoll.tempo = tempoSlider.value;
+//TODO: Might be worth preventing the user from changing the tempo while the song is playing.
 
 
 // Handle play/pause button & space bar presses.
@@ -190,7 +201,8 @@ function backToStart(){
 document.getElementById("generate-button").addEventListener("click", expandMelody) //add event listener to generate button
 function expandMelody(){
     let mml = pianoRoll.getMMLString();
-    console.log(mml.slice(8))
+    console.log("Full MML String: \'" + mml + "\'")
+    console.log("Note Information: \'" + mml.slice(8) + "\'")
     //TODO: Send song to Backend to generate melody
 
 }
