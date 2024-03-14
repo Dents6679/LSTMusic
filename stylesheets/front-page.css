@@ -171,6 +171,11 @@ webaudio-pianoroll{
     font-size: min(1.7vh,0.9vw);
 }
 
+#bpm-container{
+    top: 81%;
+    font-size: min(1.7vh,0.9vw);
+}
+
 
 #temp-readout {
     position: absolute;
@@ -184,12 +189,23 @@ webaudio-pianoroll{
     left: 10%;
 }
 
+#bpm-readout{
+    position: absolute;
+    top: 8%;
+    left: 10%;
+}
+
 #temp-number{
     font-family: monospace;
     font-weight: normal;
 }
 
 #len-number{
+    font-family: monospace;
+    font-weight: normal;
+}
+
+#bpm-number{
     font-family: monospace;
     font-weight: normal;
 }
@@ -207,6 +223,16 @@ webaudio-pianoroll{
 #len-slider {
     position: absolute;
     top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 80%; /* Full-width */
+    height: 5%;
+}
+
+#bpm-slider{
+    position: absolute;
+    top: 75%;
     left: 50%;
     transform: translate(-50%, -50%);
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" content="width=device-width, initial-scale=1.0">
-        <title>Canvas Test</title>
+        <title>LSTMusic</title>
         <link rel="icon" href="frontend-assets/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="stylesheets/front-page.css">
         <script src="https://g200kg.github.io/webaudio-pianoroll/webaudio-pianoroll.js"></script>
@@ -44,6 +44,7 @@
                             <input type="range" min="0" max="100" value="60" id="temp-slider">
                         </div>
                     </div>
+
                     <div id="len-container" class="param-container">
                         <div id="len-readout">
                             Extend by: <span id="len-number"></span> bars
@@ -51,7 +52,15 @@
                         <div>
                             <input type="range" min="2" max="8" value="4" id="len-slider">
                         </div>
+                    </div>
 
+                    <div id="bpm-container" class="param-container">
+                        <div id="bpm-readout">
+                            Tempo: <span id="bpm-number"></span> bpm
+                        </div>
+                        <div>
+                            <input type="range" step="5" min="60" max="240" value="120" id="bpm-slider">
+                        </div>
                     </div>
                 </div>
 
