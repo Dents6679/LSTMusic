@@ -34,6 +34,7 @@ def file_exists(file_path) -> bool:
     """
     return os.path.exists(file_path)
 
+
 def has_files_within(directory_path) -> bool:
     """
     Checks if a directory contains any files.
@@ -41,6 +42,7 @@ def has_files_within(directory_path) -> bool:
     :return: If the directory contains any files.
     """
     return len(os.listdir(directory_path)) > 0
+
 
 def load_songs(dataset_path, verbose=True) -> List[m21.stream.base.Score]:
     """
@@ -204,9 +206,7 @@ def preprocess(dataset_path, output_path, verbose=False) -> None:
 def load(file_path) -> str:
     """
     Loads an encoded song from a file.
-
     :param file_path: str, The directory of the file to load.
-
     :return: str, The string representation of the file's contents.
     """
 

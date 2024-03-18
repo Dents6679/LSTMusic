@@ -45,8 +45,10 @@ def macro_to_time_series(macro_string):
 
 
         elif token == '&':
+            pass
             # Ignore next note letter but not the length
         elif token == '.':
+            pass
             # Halve the length of the previous note and add it to the time series
 
 
@@ -59,6 +61,7 @@ def main():
 
     test_string = "o4abcdefg"
     print(macro_to_time_series(test_string))
+
 
 if __name__ == '__main__':
     main()

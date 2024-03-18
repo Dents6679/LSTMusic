@@ -64,6 +64,7 @@ pianoRoll.redraw();
 
 let temperature = 0.6 //set default temperature to 0.6
 let isPlaying = false; //set default playing state to false
+let outputLength = 4; //set default output length to 4 bars
 
 let timebase= 480;
 let actx= new AudioContext();
@@ -85,13 +86,19 @@ function updateRollSize() {
 let tempSlider = document.getElementById("temp-slider"); //fetch temp slider object
 let tempOutput = document.getElementById("temp-number"); //fetch temp output text
 tempOutput.innerHTML = String(Number(tempSlider.value)/100); // Display the default temp slider value
-tempSlider.oninput = function () { tempOutput.innerHTML = String(Number(this.value/100)); temperature = Number(this.value/100) } //update readout whenever it's changed.
+tempSlider.oninput = function () {
+                                            tempOutput.innerHTML = String(Number(this.value/100));
+                                            temperature = Number(this.value/100)
+                                       } //update readout whenever it's changed.
 
 // Handle length slider
 let lenSlider = document.getElementById("len-slider"); //fetch slider object
 let lenOutput = document.getElementById("len-number"); //fetch output text
 lenOutput.innerHTML = lenSlider.value; // Display the default slider value
-lenSlider.oninput = function () { lenOutput.innerHTML = this.value } //update readout whenever it's changed.
+lenSlider.oninput = function () {
+                                        lenOutput.innerHTML = this.value;
+                                        outputLength = this.value;
+                                        } //update readout whenever it's changed.
 
 // Handle tempo slider
 let tempoSlider = document.getElementById("bpm-slider"); //fetch slider object
@@ -198,11 +205,28 @@ function backToStart(){
 
 
 // Handle Generate button
-document.getElementById("generate-button").addEventListener("click", expandMelody) //add event listener to generate button
-function expandMelody(){
-    let mml = pianoRoll.getMMLString();
+document.getElementById("generate-button").addEventListener("click", requestMelodyExpansion) //add event listener to generate button
+async function requestMelodyExpansion(){
+    const mml = pianoRoll.getMMLString();
     console.log("Full MML String: \'" + mml + "\'")
-    console.log("Note Information: \'" + mml.slice(8) + "\'")
     //TODO: Send song to Backend to generate melody
 
+    const requestBody = mml+ ";;;" + temperature + ";;;" + outputLength;
+
+    try{
+        const response = await fetch('http://127.0.0.1:5000/generate_melody',
+            {  method: 'POST',
+                    headers:
+                        {
+                            'Content-Type': 'text/plain',
+                        },
+                    body: requestBody
+            }
+        )
+    }
+    catch(error){
+        console.log("Error while trying to fetch data.: " + error)
+    }
 }
+
+
