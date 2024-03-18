@@ -7,7 +7,8 @@ def note_to_midi(note_char, current_octave):
     note_map = {'a': 57, 'b': 59, 'c': 60, 'd': 62, 'e': 64, 'f': 65, 'g': 67}
     return note_map[note_char] + (current_octave - 4) * 12
 
-def macro_to_time_series(macro_string):
+
+def macro_to_time_series(macro_string: str) -> str:
     time_series = ""
     current_note_length = 1  # The length of the current note in eighth notes
     current_octave = 4

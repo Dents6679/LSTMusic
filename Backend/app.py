@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-def generate_to_server(base_file_path, file_number, temperature, extension_length) -> NoReturn:
+def generate_to_server(base_file_path: str, file_number:str, temperature:float, extension_length:int) -> NoReturn:
     """
     Extends a given base melody and saves it to the server with a unique identifier.
     defined as a separate function for use in a separate thread to allow for main thread to respond to client.
@@ -109,8 +109,9 @@ def generate_melody_new():
         :return:
     """
 
-    # Generate unique Melody ID.
+    # Generate unique Melody ID and prepare melody file path.
     file_number = str(int(time.time()))
+    midi_file_path = f"{UPLOAD_FOLDER_PATH}/melody_{file_number}.mid"
 
     # Get data from request.
     try:
@@ -120,18 +121,23 @@ def generate_melody_new():
         raise e
 
     response_items = response_data.split(';;;')
+    temperature = float(response_items[1])
 
-    # Decode MML
-    mml = response_items[0]
+    # Decode MML and save it as a MIDI file to server.
+    mml = str(response_items[0])
+
+    # TODO: Do something with the MML to convert it to a MIDI file here.
+
+
 
     # Calculate Extension Length for LSTM, Measured in 'series events' which represent a 16th of a note.
     extension_length_in_bars = int(response_items[2])
     extension_length_for_lstm = extension_length_in_bars * 16  # Convert to 16th notes
 
     # Start Melody Generation
-    temperature = response_items[1]
 
-    generate_to_server(None, file_number, temperature, extension_length_for_lstm)
+
+    generate_to_server(midi_file_path, file_number, temperature, extension_length_for_lstm)
 
 
 @app.route('/check_status/<song_id>', methods=['POST', 'GET'])

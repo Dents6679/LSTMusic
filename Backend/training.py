@@ -23,7 +23,7 @@ KERN_DATASET_PATH = "Dataset Resources/KERN"
 
 
 def build_model(output_units: int, loss_fn: str, num_units: List[int], learning_rate: float,
-                verbose: bool = False):
+                verbose: bool = False) -> keras.Model:
     """
     Builds the LSTM.
 
@@ -73,15 +73,15 @@ def train(loss_fn: str, num_units: List[int], learning_rate: float, epochs: int,
     Saves the model's weights and biases to a specified file path when all epochs are completed.
     Saves checkpoints after each epoch.
 
-    :param loss_fn: str, The loss function being used for training.
-    :param num_units: list of int, The number of hidden layers in the network, in a list format where each element
+    :param loss_fn: The loss function being used for training.
+    :param num_units: The number of hidden layers in the network, in a list format where each element
     represents a hidden layer.
-    :param learning_rate: float, The learning rate the model uses.
-    :param epochs: int, The number of epochs used to train the model.
-    :param batch_size: int, The amount of samples the network sees before running backpropagation.
-    :param model_path: str, The path which the model shall be saved to.
-    :param flattened_dataset: str, The flattened dataset which the model will train off of.
-    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
+    :param learning_rate: The learning rate the model uses.
+    :param epochs: The number of epochs used to train the model.
+    :param batch_size: The amount of samples the network sees before running backpropagation.
+    :param model_path: The path which the model shall be saved to.
+    :param flattened_dataset: The flattened dataset which the model will train off of.
+    :param verbose: Enable additional print statements for debug purposes. Default is False.
 
     :return: None.
     """

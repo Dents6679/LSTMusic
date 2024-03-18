@@ -4,19 +4,18 @@ from preprocess import SEQUENCE_LENGTH, NOTE_MAPPINGS_PATH, encode_song
 from training import MODEL_FILEPATH
 import numpy as np
 import music21 as m21
-
+from typing import List
 
 MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
 
 
-
-def streamify_melody(melody, step_duration=0.25):
+def streamify_melody(melody: str, step_duration: float = 0.25) -> m21.stream.Stream:
     """
     De-encodes a Time Series String into an M21 Stream object.
 
-    :param melody: M21.stream.Stream, The Melody to de-encode
-    :param step_duration: float, The Step duration.
-    :return stream: Music21.stream.Stream, The M21 Stream representation of the melody.
+    :param melody: The Melody to de-encode
+    :param step_duration: The Step duration.
+    :return stream: The M21 Stream representation of the melody.
     """
 
     # Create music21 stream
@@ -56,20 +55,19 @@ def streamify_melody(melody, step_duration=0.25):
     return stream  # stream.write("midi", path) will convert this into a MIDI file for later.
 
 
-def sample_with_temperature(probability_distribution, temperature):
+def sample_with_temperature(probability_distribution: List[float], temperature: float) -> int:
     """
-    Picks a sample from a probability distribution, Forcefully increase the entropy of a specified temparature value.
-    :param probability_distribution: list of float, The distribution to pick the next note from.
-    :param temperature: float, The temperature to use. 1 is the default temp.
-    :return index: int, The Index of the sample which will be picked.
+    Picks a sample from a probability distribution, Forcefully increase the entropy of a specified temperature value.
+    :param probability_distribution: The distribution to pick the next note from.
+    :param temperature: The temperature to use. 1 is the default temp.
+    :return index: The Index of the sample which will be picked.
     """
 
     predictions = np.log(probability_distribution) / temperature
     probability_distribution = np.exp(predictions) / np.sum(np.exp(predictions))
 
-    choices = range(len(probability_distribution))  # [0, 1, 2 ,3]
-    index = np.random.choice(choices,
-                             p=probability_distribution)  # Pick a random index using the probability as weights.
+    choices = range(len(probability_distribution))  # e.g. [0, 1, 2 ,3]
+    index = np.random.choice(choices, p=probability_distribution)  # Pick a random index using probabilities as weights.
 
     return index
 
@@ -88,19 +86,18 @@ class Generator:
 
         self._start_symbols = ["/"] * SEQUENCE_LENGTH
 
-
-
-    def generate_melody(self, seed, number_of_steps, max_sequence_length, temperature, verbose=False) -> str:
+    def generate_melody(self, seed: str, number_of_steps: int, max_sequence_length: int, temperature: float,
+                        verbose: bool = False) -> str:
         """
         Generates a melody.
 
-        :param seed: str, The seed which kick-starts the melody off, in string time series notation ("64 _ 63 _ _")
-        :param number_of_steps: int, The number of steps to generate before stopping.
-        :param max_sequence_length: int, Limits the sequence length which the network uses for 'context'. Use Sequence
-                                         length due to training, uses SEQUENCE_LENGTH
-        :param temperature: float, A Value which impacts the randomness of output symbols are sampled from the network.
-        :param verbose: bool, Used to show LSTM predictions or not.
-        :return melody: str, The String Representation of the new song.
+        :param seed: The seed which kick-starts the melody off, in string time series notation ("64 _ 63 _ _")
+        :param number_of_steps: The number of steps to generate before stopping.
+        :param max_sequence_length: Limits the sequence length which the network uses for 'context'. Use Sequence
+                                    length due to training, uses SEQUENCE_LENGTH
+        :param temperature: A Value which impacts the randomness of output symbols are sampled from the network.
+        :param verbose: Used to show LSTM predictions or not.
+        :return melody: The String Representation of the new song.
         """
 
         # Create seed with start symbols.
@@ -146,13 +143,11 @@ class Generator:
         if verbose:
             print("Melody Generated")
 
-
-
         return melody
 
 
 if __name__ == '__main__':
-    # Test the Generator
+    # Generator Test Code.
     '''
     Annoyingly this code doesn't allow for transposition, so all of the generated 
     parts of the melodies will be in Cmaj/Amin. 
