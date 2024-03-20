@@ -137,8 +137,12 @@ def generate_melody_new():
 
     # Start Melody Generation
 
-    # TODO: Uncomment the following line to start melody generation.
-    # generate_to_server(unextended_midi_file_path, file_number, temperature, extension_length_for_lstm)
+    generation_thread = threading.Thread(target=generate_to_server, args=(unextended_midi_file_path,
+                                                                          song_id,
+                                                                          temperature,
+                                                                      extension_length_for_lstm))
+    generation_thread.start()
+
 
     # Create & return response message
     response_message = f"Generation request received.;{song_id}"  # Create response message

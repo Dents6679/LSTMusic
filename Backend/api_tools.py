@@ -30,15 +30,39 @@ def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: 
     :return: The path of the saved MIDI file.
     """
 
+    # Turn the sequence into a 2d array
+    sequence = [list(event.values()) for event in sequence]
+    # Create a new stream
+    stream = m21.stream.Stream()
 
-    for i, event in enumerate(sequence):
-        print(f"Event {i}:")
-        start_time = event['t']
-        note_number = event['n']
-        duration = event['g']
+    last_event_end = 0
+    # Work out rests and note durations
+    for event_index, event in enumerate(sequence):
+        event_start = event[0]
+        event_pitch = event[1]
+        event_duration = event[2]
+        event_duration_in_quarter_lengths = event_duration / 2
 
+        # Handle rests
+        if last_event_end < event_start:
+            rest_duration = event_start - last_event_end
+            rest = m21.note.Rest(quarterLength=rest_duration/2)
+            # Length is halved here to convert to quarter lengths
+            stream.append(rest)
+        # Handle notes
+        note = m21.note.Note(event_pitch, quarterLength=event_duration_in_quarter_lengths)
+        stream.append(note)
 
-    pass
+        last_event_end = event_start + event_duration
+
+    # Save the stream as a MIDI file
+    midi_file_path = os.path.join("Uploaded_files", f"unextended_melody_{song_id}.mid")
+    stream.write("midi", midi_file_path)
+
+    if verbose:
+        print(f"Saved MIDI file to {midi_file_path}")
+
+    return midi_file_path
 
 
 def preprocess_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:
