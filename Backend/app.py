@@ -124,21 +124,30 @@ def generate_melody_new():
     temperature = float(response_items[1])
 
     # Decode MML and save it as a MIDI file to server.
-    mml = str(response_items[0])
+    sequence = str(response_items[0])
 
-    # TODO: Do something with the MML to convert it to a MIDI file here.
+    print(f"Sequence Data: '{sequence}'")
+
+
+    # TODO: Do something with the sequence to convert it to a MIDI file here.
 
 
 
     # Calculate Extension Length for LSTM, Measured in 'series events' which represent a 16th of a note.
-    extension_length_in_bars = int(response_items[2])
+    extension_length_in_bars = int(response_items[2][:-1])
     extension_length_for_lstm = extension_length_in_bars * 16  # Convert to 16th notes
 
     # Start Melody Generation
 
 
-    generate_to_server(midi_file_path, file_number, temperature, extension_length_for_lstm)
+    """generate_to_server(midi_file_path, file_number, temperature, extension_length_for_lstm)"""
 
+    # Create & return response message
+    response_message = f"Generation request received.;{file_number}"  # Create response message
+    resp = jsonify({'status': 200, 'message': response_message})  # Create response
+    resp.status_code = 200  # Set status code
+
+    return resp
 
 @app.route('/check_status/<song_id>', methods=['POST', 'GET'])
 def check_status(song_id):

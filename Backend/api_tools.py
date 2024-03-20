@@ -36,11 +36,7 @@ def preprocess_api_mml(mml: str, verbose=False) -> Tuple[str, m21.interval.Inter
     note_length = mml[5:7]
     note_sequence = mml[7:]
 
-    note_length_conversions = {
-        1: "_ "*15,
-        2: "_ "*7,
-
-    }
+    pass
 
 
 def preprocess_api_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:

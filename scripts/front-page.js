@@ -208,13 +208,18 @@ function backToStart(){
 document.getElementById("generate-button").addEventListener("click", requestMelodyExpansion) //add event listener to generate button
 async function requestMelodyExpansion(){
     const mml = pianoRoll.getMMLString();
-    console.log("Full MML String: \'" + mml + "\'")
+
+
+
+    const sequenceData = pianoRoll.sequence;
+    const stringifiedSequenceData = JSON.stringify(sequenceData);
+
     //TODO: Send song to Backend to generate melody
 
-    const requestBody = mml+ ";;;" + temperature + ";;;" + outputLength;
+    const requestBody = stringifiedSequenceData+ ";;;" + temperature + ";;;" + outputLength;
 
     try{
-        const response = await fetch('http://127.0.0.1:5000/generate_melody',
+        const response = await fetch('http://127.0.0.1:5000/generate_melody_new',
             {  method: 'POST',
                     headers:
                         {
