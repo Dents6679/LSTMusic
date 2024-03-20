@@ -1,6 +1,6 @@
 from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose, encode_song
 import music21 as m21
-from typing import Tuple
+from typing import Tuple, Dict, List
 import os
 
 
@@ -20,26 +20,28 @@ class InvalidNoteDurationError(Exception):
         super().__init__(self.message)
 
 
-def preprocess_api_mml(mml: str, verbose=False) -> Tuple[str, m21.interval.Interval]:
+def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: bool = False, ) -> str:
     """
-    Preprocesses a single supplied MML Song into a file, typically supplied from the Flask API.
+    preprocesses a single api-supplied sequence into a MIDI file.
 
-    :param mml: str, The MML string to preprocess.
-    :param verbose: bool, optional, Enable additional print statements for debug purposes. Default is False.
-
-    :return:
+    :param sequence: The sequence to save as a MIDI file.
+    :param song_id: The ID of the song.
+    :param verbose: Enable additional print statements for debug purposes. Default is False.
+    :return: The path of the saved MIDI file.
     """
-    # TODO: Finish this function
-    # Sample MML: t120o4l8r1b16
-    tempo = mml[0:3]
-    octave = mml[3:5]
-    note_length = mml[5:7]
-    note_sequence = mml[7:]
+
+
+    for i, event in enumerate(sequence):
+        print(f"Event {i}:")
+        start_time = event['t']
+        note_number = event['n']
+        duration = event['g']
+
 
     pass
 
 
-def preprocess_api_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:
+def preprocess_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:
     """
     Preprocesses a single supplied MIDI Song into a file, typically supplied from the Flask API.
 

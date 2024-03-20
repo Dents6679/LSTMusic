@@ -1,11 +1,11 @@
-songId = location.search.split('songId=')[1];
-
+let songId = location.search.split('songId=')[1];
+const BACKEND_URL = "http://127.0.0.1:5000"
 
 document.getElementById('generation-id').textContent = songId; 
 
 // Poll the server every 2 seconds to check if the song is ready to download.
 const pollForCompletion = setInterval(async () => {
-    const statusResponse = await fetch(`http://127.0.0.1:5000/check_status/${songId}`);
+    const statusResponse = await fetch(BACKEND_URL + '/check_status/${songId}');
 
     if (statusResponse.ok) {
       const status = await statusResponse.text();

@@ -6,9 +6,9 @@ from flask_cors import CORS
 from generator import Generator, streamify_melody
 from training import MODEL_FILEPATH
 from preprocess import SEQUENCE_LENGTH
-from api_tools import preprocess_api_midi, undo_transpose, GenerationError, has_melody_generated
+from api_tools import preprocess_midi, undo_transpose, GenerationError, has_melody_generated, process_api_sequence
 import time
-from deprecated import deprecated
+import json
 
 UPLOAD_FOLDER_PATH = "Uploaded_files"
 
@@ -17,14 +17,14 @@ app = Flask(__name__)
 CORS(app)
 
 
-def generate_to_server(base_file_path: str, file_number:str, temperature:float, extension_length:int) -> NoReturn:
+def generate_to_server(base_file_path: str, file_number: str, temperature: float, extension_length: int) -> NoReturn:
     """
     Extends a given base melody and saves it to the server with a unique identifier.
     defined as a separate function for use in a separate thread to allow for main thread to respond to client.
     :param temperature: The temperature to use while generating the melody.
     :param extension_length: The length of the melody to generate in LSTM event units.
-    :param base_file_path: the path of the melody to extend.
-    :param file_number: the unique identifier of the melody.
+    :param base_file_path: the path of the MIDI melody to extend.
+    :param file_number: the unique identifier of the melody, used for output.
     :return: None
     :raises: IOError, GenerationError, Exception
     """
@@ -34,7 +34,7 @@ def generate_to_server(base_file_path: str, file_number:str, temperature:float, 
 
     print("Generating Melody, please wait...")
     try:
-        supplied_seed, reverse_transposition = preprocess_api_midi(base_file_path)
+        supplied_seed, reverse_transposition = preprocess_midi(base_file_path)
         generated_melody = generator.generate_melody(seed=supplied_seed,
                                                      number_of_steps=extension_length,
                                                      max_sequence_length=SEQUENCE_LENGTH,
@@ -110,8 +110,8 @@ def generate_melody_new():
     """
 
     # Generate unique Melody ID and prepare melody file path.
-    file_number = str(int(time.time()))
-    midi_file_path = f"{UPLOAD_FOLDER_PATH}/melody_{file_number}.mid"
+    song_id = str(int(time.time()))
+
 
     # Get data from request.
     try:
@@ -124,14 +124,12 @@ def generate_melody_new():
     temperature = float(response_items[1])
 
     # Decode MML and save it as a MIDI file to server.
-    sequence = str(response_items[0])
+    raw_sequence = response_items[0][2::]
 
-    print(f"Sequence Data: '{sequence}'")
+    sequence = json.loads(raw_sequence)
 
-
-    # TODO: Do something with the sequence to convert it to a MIDI file here.
-
-
+    # TODO: Save the sequence as a MIDI file to the server.
+    unextended_midi_file_path = process_api_sequence(sequence, song_id=song_id, verbose=True)
 
     # Calculate Extension Length for LSTM, Measured in 'series events' which represent a 16th of a note.
     extension_length_in_bars = int(response_items[2][:-1])
@@ -139,11 +137,11 @@ def generate_melody_new():
 
     # Start Melody Generation
 
-
-    """generate_to_server(midi_file_path, file_number, temperature, extension_length_for_lstm)"""
+    # TODO: Uncomment the following line to start melody generation.
+    # generate_to_server(unextended_midi_file_path, file_number, temperature, extension_length_for_lstm)
 
     # Create & return response message
-    response_message = f"Generation request received.;{file_number}"  # Create response message
+    response_message = f"Generation request received.;{song_id}"  # Create response message
     resp = jsonify({'status': 200, 'message': response_message})  # Create response
     resp.status_code = 200  # Set status code
 

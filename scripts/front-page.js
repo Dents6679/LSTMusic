@@ -1,6 +1,5 @@
 // THANK YOU VERY MUCH TO G200KG FOR MAKING THIS FRONTEND POSSIBLE!
 // https://github.com/g200kg/webaudio-pianoroll
-// Lots of love, Tom <3
 
 
 // -- Setting up Piano Roll --
@@ -55,20 +54,15 @@ pianoRoll.redraw();
 
 
 
-//       ------ Code! -------
-
-// -- Some test code --
-// hello. I'm a comment.
-
-// -- End of test code --
+//       ------ Code -------
 
 let temperature = 0.6 //set default temperature to 0.6
 let isPlaying = false; //set default playing state to false
 let outputLength = 4; //set default output length to 4 bars
-
 let timebase= 480;
 let actx= new AudioContext();
 
+const BACKEND_URL = "http://127.0.0.1:5000"
 
 //Handle window resizing
 window.addEventListener('resize', updateRollSize);
@@ -78,7 +72,6 @@ function updateRollSize() {
     pianoRoll.width = width * 0.8;
     pianoRoll.height = height * 0.5;
     pianoRoll.kbwidth = width * 0.08;
-    console.log("Changed window size.")
     pianoRoll.redraw();
 }
 
@@ -214,24 +207,28 @@ async function requestMelodyExpansion(){
     const sequenceData = pianoRoll.sequence;
     const stringifiedSequenceData = JSON.stringify(sequenceData);
 
-    //TODO: Send song to Backend to generate melody
 
     const requestBody = stringifiedSequenceData+ ";;;" + temperature + ";;;" + outputLength;
 
-    try{
-        const response = await fetch('http://127.0.0.1:5000/generate_melody_new',
-            {  method: 'POST',
-                    headers:
-                        {
-                            'Content-Type': 'text/plain',
-                        },
-                    body: requestBody
-            }
-        )
+    const response = await fetch(BACKEND_URL + '/generate_melody_new',
+        {  method: 'POST',
+                headers:
+                    {
+                        'Content-Type': 'text/plain',
+                    },
+                body: requestBody
+        }
+    )
+    if (!response.ok){
+        throw new Error('Network response was not ok');
     }
-    catch(error){
-        console.log("Error while trying to fetch data.: " + error)
-    }
+
+    // Get response data and redirect to waiting page
+    const responseText = await response.text();
+    const responseObject = JSON.parse(responseText);
+    const responseMessages = responseObject.message.split(';');
+    const songId = responseMessages[1];
+    window.location.href = "waiting.html?songId=" + songId;
 }
 
 

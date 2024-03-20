@@ -1,3 +1,9 @@
+"""
+Upon further investigation, it seems as if the MML format is a bit more complex than I initially thought.
+Fortunately though, webaudio-pianoroll's internal song representation is much simpler than the MML format,
+So I'll be using that.
+"""
+
 
 possible_events = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'a-', 'b-', 'd-', 'e-', 'f-', 'g-', 'r']
 possible_lengths = ['2', '4', '16']
@@ -134,6 +140,7 @@ def attempt_2(mml_string: str) -> str:
                 and_extension = True
                 continue
             elif token in possible_events:
+                continue
 
 
 

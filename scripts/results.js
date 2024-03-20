@@ -1,3 +1,5 @@
+
+const BACKEND_URL = "http://127.0.0.1:5000"
 function getQueryParam(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
@@ -6,7 +8,7 @@ function getQueryParam(name) {
 function loadAndPlayMidi() {
     const songId = getQueryParam("song_id");
     if (songId) {
-        const midiUrl = "http://127.0.0.1:5000/download_file/" + songId;
+        const midiUrl = BACKEND_URL + "/download_file/" + songId;
         console.log("Midi URL is:" + midiUrl)
 
         document.getElementById('midi-player-1').src = midiUrl;
