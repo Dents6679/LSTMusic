@@ -1,4 +1,6 @@
-/backend/Model Resources
-/backend/Dataset Resources
-/backend/Generated\ Melodies
+/backend/dataset-resources/
+/backend/generated-melodies/
+/backend/.idea/
 /backend/uploaded-files/
+/backend/model-resources/Model Checkpoints/
+/.idea/.name
