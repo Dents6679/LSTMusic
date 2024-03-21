@@ -1,12 +1,13 @@
+import {BACKEND_URL} from './front-page.js';
 let songId = location.search.split('songId=')[1];
 let attempts = 0;
-const BACKEND_URL = "http://127.0.0.1:5000"
+
 
 document.getElementById('generation-id').textContent = songId; 
 
 // Poll the server every 2 seconds to check if the song is ready to download.
 const pollForCompletion = setInterval(async () => {
-    const statusResponse = await fetch(BACKEND_URL + '/check_status/${songId}');
+    const statusResponse = await fetch(BACKEND_URL + '/check_status/' + songId);
 
     attempts++;
     if (statusResponse.ok) {
@@ -15,7 +16,7 @@ const pollForCompletion = setInterval(async () => {
       if (status === 'complete') {
         clearInterval(pollForCompletion); 
         console.log("Song is ready to download")
-        window.location.href = "/frontend/results.html?song_id=" + songId;
+        window.location.href = "/results.html?song_id=" + songId;
 
       }  else { 
         console.log("Song is still processing...")

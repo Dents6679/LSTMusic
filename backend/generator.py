@@ -6,7 +6,7 @@ import numpy as np
 import music21 as m21
 from typing import List
 
-MIDI_OUTPUT_PATH = "Generated Melodies/melody.mid"
+MIDI_OUTPUT_PATH = "generated-melodies/melody.mid"
 
 
 def streamify_melody(melody: str, step_duration: float = 0.25) -> m21.stream.Stream:

@@ -10,7 +10,7 @@ from api_tools import preprocess_midi, undo_transpose, GenerationError, has_melo
 import time
 import json
 
-UPLOAD_FOLDER_PATH = "Uploaded_files"
+UPLOAD_FOLDER_PATH = "uploaded-files"
 
 generator = Generator(MODEL_FILEPATH)
 app = Flask(__name__)
@@ -153,7 +153,11 @@ def generate_melody_new():
 
 @app.route('/check_status/<song_id>', methods=['POST', 'GET'])
 def check_status(song_id):
+    print(song_id)
+
+
     if has_melody_generated(song_id):
+
         print("client has been notified of completion.")
         response = make_response('complete', 200)
         response.mimetype = "text/plain"

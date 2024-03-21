@@ -10,10 +10,10 @@ from typing import List, Tuple, Dict
 SEQUENCE_LENGTH = 64  # Represents the fixed length input which the LSTM will use.
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Disables Tensorflow's Debugging Information
-KERN_DATASET_PATH = "Dataset Resources/KERN"
-SINGLE_FILE_DATASET_PATH = "Dataset Resources/single file dataset"
-ENCODED_DATASET_DIR = "Dataset Resources/Encoded Dataset"
-NOTE_MAPPINGS_PATH = "Dataset Resources/Song Mappings/mappings.json"
+KERN_DATASET_PATH = "dataset-resources/KERN"
+SINGLE_FILE_DATASET_PATH = "dataset-resources/single file dataset"
+ENCODED_DATASET_DIR = "dataset-resources/Encoded Dataset"
+NOTE_MAPPINGS_PATH = "dataset-resources/Song Mappings/mappings.json"
 
 ACCEPTABLE_DURATIONS = [
     0.25,  # Sixteenth Note

@@ -56,13 +56,15 @@ pianoRoll.redraw();
 
 //       ------ Code -------
 
+const BACKEND_URL = "http://127.0.0.1:5000"
+export {BACKEND_URL}
+
 let temperature = 0.6 //set default temperature to 0.6
 let isPlaying = false; //set default playing state to false
 let outputLength = 4; //set default output length to 4 bars
 let timebase= 480;
 let actx= new AudioContext();
 
-const BACKEND_URL = "http://127.0.0.1:5000"
 
 //Handle window resizing
 window.addEventListener('resize', updateRollSize);
@@ -111,7 +113,12 @@ document.addEventListener("keydown", debounce(function(event) {
     }
 }, 200)); //debounce spacebar presses to prevent accidental double presses
 
-
+/**
+ * Debounces a function to prevent accidental double presses.
+ * @param func The function to debounce
+ * @param delay The delay in ms to debounce the function by.
+ * @returns {(function(): void)|*}
+ */
 function debounce(func, delay) {
     let debounceTimer;
     return function() {
@@ -122,6 +129,9 @@ function debounce(func, delay) {
     }
 }
 
+/**
+ * Plays/pauses the melody.
+ */
 function playPause(){
 
     if(isPlaying){
@@ -145,6 +155,10 @@ function playPause(){
 
 
 //TODO: Change this callback function to play a piano-like sound.
+/**
+ * Callback function for playing notes.
+ * @param ev - event object
+ */
 function Callback(ev){
 	var o=actx.createOscillator();
 	var g=actx.createGain();
@@ -157,6 +171,10 @@ function Callback(ev){
 	o.connect(g);
 	g.connect(actx.destination);
 }
+
+/**
+ * Plays the melody from the piano roll.
+ */
 function playMelody() {
     actx.resume();
     pianoRoll.play(actx, Callback);
@@ -165,6 +183,9 @@ function playMelody() {
 
 // Handle Reset button
 document.getElementById("clear-button").addEventListener("click", clearRoll) //add event listener to board clearing button
+/**
+ * Clears the piano roll of all notes.
+ */
 function clearRoll(){
     pianoRoll.setMMLString("");
     pianoRoll.cursor = 0;
@@ -185,6 +206,9 @@ function clearRoll(){
 // Handle Back to start Button
 document.getElementById("back-button").addEventListener("click", backToStart)
 
+/**
+ * Resets the cursor to the start of the melody.
+ */
 function backToStart(){
     pianoRoll.cursor = 0;
     if(isPlaying){
@@ -199,6 +223,10 @@ function backToStart(){
 
 // Handle Generate button
 document.getElementById("generate-button").addEventListener("click", requestMelodyExpansion) //add event listener to generate button
+
+/**
+ * Sends a request to the backend to expand the melody.
+ */
 async function requestMelodyExpansion(){
     const mml = pianoRoll.getMMLString();
 

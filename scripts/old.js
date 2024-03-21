@@ -1,3 +1,11 @@
+/**
+ * Looking back at this code, I'm not sure what I was thinking, I'm sorry for anyone who has to read it.
+ * It's since been rewritten alongside a new css and html file.
+ * (this file is no longer used)
+ */
+
+
+
 import MidiWriter from 'https://cdn.skypack.dev/midi-writer-js';
 
 var board = []; //Initialise board

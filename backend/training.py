@@ -17,9 +17,9 @@ LOSS_FN = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 NUM_UNITS = [256]
 BATCH_SIZE = 64
-MODEL_FILEPATH = "Model Resources/Model Saves/model.keras"
-ERK_DATASET_PATH = "Dataset Resources/KERN/erk"
-KERN_DATASET_PATH = "Dataset Resources/KERN"
+MODEL_FILEPATH = "model-resources/Model Saves/model.keras"
+ERK_DATASET_PATH = "dataset-resources/KERN/erk"
+KERN_DATASET_PATH = "dataset-resources/KERN"
 
 
 def build_model(output_units: int, loss_fn: str, num_units: List[int], learning_rate: float,
@@ -92,8 +92,8 @@ def train(loss_fn: str, num_units: List[int], learning_rate: float, epochs: int,
                                                                    verbose=True)
 
     # Build network (Checking if a checkpoint exists)
-    checkpoint_path = "Model Resources/Model Checkpoints/cp-{epoch:04d}.ckpt"
-    latest_checkpoint = tf.train.latest_checkpoint("Model Resources/Model Checkpoints")
+    checkpoint_path = "model-resources/Model Checkpoints/cp-{epoch:04d}.ckpt"
+    latest_checkpoint = tf.train.latest_checkpoint("model-resources/Model Checkpoints")
     if latest_checkpoint:
         if verbose:
             print(f"Loading weights from {latest_checkpoint}")

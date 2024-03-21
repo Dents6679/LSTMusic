@@ -56,7 +56,7 @@ def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: 
         last_event_end = event_start + event_duration
 
     # Save the stream as a MIDI file
-    midi_file_path = os.path.join("Uploaded_files", f"unextended_melody_{song_id}.mid")
+    midi_file_path = os.path.join("uploaded-files", f"unextended_melody_{song_id}.mid")
     stream.write("midi", midi_file_path)
 
     if verbose:
@@ -111,12 +111,12 @@ def undo_transpose(song, interval, verbose=False) -> m21.stream.base.Score:
     return untransposed_song
 
 
-def has_melody_generated(melody_id: str) -> bool:
+def has_melody_generated(song_id: str) -> bool:
     """
     Checks if the melody has been generated and saved.
-    :param melody_id: str The ID of the melody.
+    :param song_id: str The ID of the melody.
     :return bool: True if the melody has been generated, False otherwise.
     """
 
-    path = os.path.join("Generated Melodies", f"extended_melody_{melody_id}.mid")
+    path = os.path.join("generated-melodies", f"extended_melody_{song_id}.mid")
     return os.path.exists(path)
