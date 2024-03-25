@@ -44,7 +44,7 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
         raise GenerationError("An error has occurred during generation.")
 
     try:
-        output_path = f"Generated Melodies/extended_melody_{file_number}.mid"
+        output_path = f"generated-melodies/extended_melody_{file_number}.mid"
 
         generated_melody_stream = streamify_melody(generated_melody)
         untransposed_melody = undo_transpose(generated_melody_stream, reverse_transposition)
