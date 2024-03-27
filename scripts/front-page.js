@@ -235,18 +235,23 @@ async function requestMelodyExpansion(){
 
 
     const requestBody = stringifiedSequenceData+ ";;;" + temperature + ";;;" + outputLength;
-
-    const response = await fetch(BACKEND_URL + '/generate_melody_new',
-        {  method: 'POST',
-                headers:
-                    {
-                        'Content-Type': 'text/plain',
-                    },
-                body: requestBody
+    try{
+        const response = await fetch(BACKEND_URL + '/generate_melody_new',
+            {  method: 'POST',
+                    headers:
+                        {
+                            'Content-Type': 'text/plain',
+                        },
+                    body: requestBody
+            }
+        )
+        if (!response.ok){
+            throw new Error('Network response was not ok');
         }
-    )
-    if (!response.ok){
-        throw new Error('Network response was not ok');
+    }
+    catch(error) {
+        console.error('Fetch request failed:', error);
+        window.location.href = "error.html?errorId=1"; // Redirect to error.html with errorId=1
     }
 
     // Get response data and redirect to waiting page
