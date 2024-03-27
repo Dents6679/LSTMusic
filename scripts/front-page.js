@@ -152,9 +152,7 @@ function playPause(){
 
 
 
-
-
-//TODO: Change this callback function to play a piano-like sound.
+//TODO: Change this callback function to play a piano-like sound?
 /**
  * Callback function for playing notes.
  * @param ev - event object
@@ -259,4 +257,32 @@ async function requestMelodyExpansion(){
     window.location.href = "waiting.html?songId=" + songId;
 }
 
+//Handle "About" button
+const popupOverlay = document.getElementById('popupOverlay');
+const closePopupButton = document.getElementById('close-button');
+
+document.getElementById("about-text").addEventListener("click", () => openPopup())
+
+
+
+//open popup fn
+function openPopup() {
+    popupOverlay.style.display = 'block';
+}
+
+//close popup fn
+function closePopup() {
+    popupOverlay.style.display = 'none';
+}
+
+
+// Close about section when the close button is clicked
+closePopupButton.addEventListener('click', closePopup);
+
+//close about section when clicking outside the popup content
+popupOverlay.addEventListener('click', function (event) {
+    if (event.target === popupOverlay) {
+        closePopup();
+    }
+});
 
