@@ -7,7 +7,7 @@ const errorText = document.getElementById('error-text');
 switch (errorId) {
 
     case '1': // Server not Available
-        errorText.innerText = 'The backend server is not available right now. Please try again later.';
+        errorText.innerText = 'The generation server is not available right now. Please try again later.';
         document.getElementById('gen-id').style.display = 'none';
         break;
     case '2': // Generation Error
