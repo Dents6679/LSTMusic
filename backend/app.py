@@ -170,7 +170,7 @@ def check_status(song_id):
 
 @app.route('/download_file/<song_id>')
 def download_file(song_id):
-    filename = f"Generated Melodies/extended_melody_{song_id}.mid"
+    filename = f"generated-melodies/extended_melody_{song_id}.mid"
     return send_file(filename, as_attachment=True)
 
 
