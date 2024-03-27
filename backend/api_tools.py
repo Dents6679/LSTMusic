@@ -81,7 +81,7 @@ def preprocess_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interva
 
     """
         Turns out the frontend is able to provide note durations that are not in the ACCEPTABLE_DURATIONS list.
-        This may cause issues. Some issues stil arise, which will be dealt with.
+        This may cause issues. Some issues still arise, which will be dealt with.
     
     # Filter out songs with non-acceptable durations (only using 1/16, 1/8, 1/4, 1/2, 1 notes)
     if not has_acceptable_durations(api_supplied_song, ACCEPTABLE_DURATIONS, verbose):
