@@ -107,6 +107,7 @@ a:active {
 
 webaudio-pianoroll{
     position: absolute;
+    display: none;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%)
@@ -201,7 +202,6 @@ webaudio-pianoroll{
     background-color: hsl(0, 70%, 51%);
     cursor: pointer;
 }
-
 
 
 

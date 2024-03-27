@@ -51,6 +51,7 @@ pianoRoll.colrulerfg = "#fff" // ruler text
 // ------  ------
 pianoRoll.preload = 2; //preload audio
 pianoRoll.redraw();
+pianoRoll.style.display = "inline"
 
 
 
