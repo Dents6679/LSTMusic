@@ -37,6 +37,8 @@ midi-visualizer .piano-roll-visualizer {
   overflow: auto;
 }
 
+
+
 /* Custom play button & note colour styles */
 
 
@@ -73,6 +75,23 @@ midi-visualizer .piano-roll-visualizer {
 #section1 midi-visualizer svg rect.note.active {
   opacity: 0.5;
   stroke: #000;
+}
+
+#section1 #download-button {
+  background-color: var(--section-1-colour);
+  border: none;
+  text-align: center;
+  font-weight: bold;
+  color: #151515;
+  border-radius: 5px;
+  padding: 0.5vw 1vw;
+  margin-top: 1%;
+  float: right;
+  margin-right: 0.25vw;
+}
+
+#section1 #download-button:hover {
+  background-color: var(--section-1-colour-hover);
 }
 
 #section2 midi-player::part(play-button) {

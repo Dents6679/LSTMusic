@@ -1,11 +1,26 @@
 const BACKEND_URL = "http://127.0.0.1:5000"
-function getQueryParam(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+const songId = location.search.split('song_id=')[1];
+
+//Add download functionality to the download button
+document.getElementById('download-button').addEventListener('click', function() {
+    // const downloadUrl = BACKEND_URL + "/download_file/" + songId;
+    // window.open(downloadUrl, '_blank');
+    const link = document.createElement("a");
+
+    link.setAttribute("download", "melody.mid");
+    link.href = BACKEND_URL + "/download_file/" + songId;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+});
+
+
+
+
+
 
 function loadAndPlayMidi() {
-    const songId = getQueryParam("song_id");
+
     if (songId) {
         const midiUrl = BACKEND_URL + "/download_file/" + songId;
         console.log("Midi URL is:" + midiUrl)
@@ -24,6 +39,8 @@ function loadAndPlayMidi() {
         console.error("No song_id provided in the URL");
     }
 }
+
+
 
 // Call the function to load the MIDI file
 loadAndPlayMidi();
