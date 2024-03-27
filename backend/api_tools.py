@@ -1,4 +1,4 @@
-from preprocess import ACCEPTABLE_DURATIONS, has_acceptable_durations, transpose, encode_song
+from preprocess import transpose, encode_song
 import music21 as m21
 from typing import Tuple, Dict, List
 import os
@@ -136,6 +136,7 @@ def add_failed_generation(song_id: str) -> None:
         file.write(f"{song_id}\n")
     file.close()
     return None
+
 
 def check_failed_generation(song_id: str) -> bool:
     """

@@ -159,6 +159,7 @@ def generate_melody_new():
 
     return resp
 
+
 @app.route('/check_status/<song_id>', methods=['POST', 'GET'])
 def check_status(song_id):
 

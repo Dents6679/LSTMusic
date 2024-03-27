@@ -1,6 +1,6 @@
 import json
 import keras
-from preprocess import SEQUENCE_LENGTH, NOTE_MAPPINGS_PATH, encode_song
+from preprocess import SEQUENCE_LENGTH, NOTE_MAPPINGS_PATH
 from training import MODEL_FILEPATH
 import numpy as np
 import music21 as m21
