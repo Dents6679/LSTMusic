@@ -6,7 +6,8 @@ from flask_cors import CORS
 from generator import Generator, streamify_melody
 from training import MODEL_FILEPATH
 from preprocess import SEQUENCE_LENGTH
-from api_tools import preprocess_midi, undo_transpose, GenerationError, has_melody_generated, process_api_sequence
+from api_tools import preprocess_midi, undo_transpose, GenerationError, has_melody_generated, process_api_sequence, \
+    add_failed_generation, check_failed_generation
 import time
 import json
 
@@ -41,7 +42,7 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
                                                      temperature=temperature)
     except Exception:
         print(f"Failed generating Melody through LSTM.")
-        raise GenerationError("An error has occurred during generation.")
+        add_failed_generation(file_number)
 
     try:
         output_path = f"generated-melodies/extended_melody_{file_number}.mid"
@@ -140,7 +141,7 @@ def generate_melody_new():
     generation_thread = threading.Thread(target=generate_to_server, args=(unextended_midi_file_path,
                                                                           song_id,
                                                                           temperature,
-                                                                      extension_length_for_lstm))
+                                                                          extension_length_for_lstm))
     generation_thread.start()
 
 
@@ -155,6 +156,10 @@ def generate_melody_new():
 def check_status(song_id):
     print(song_id)
 
+    if check_failed_generation(song_id):
+        response = make_response('failed', 200)
+        response.mimetype = "text/plain"
+        return response
 
     if has_melody_generated(song_id):
 

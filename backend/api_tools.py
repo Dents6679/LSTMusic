@@ -117,6 +117,32 @@ def has_melody_generated(song_id: str) -> bool:
     :param song_id: str The ID of the melody.
     :return bool: True if the melody has been generated, False otherwise.
     """
-
     path = os.path.join("generated-melodies", f"extended_melody_{song_id}.mid")
     return os.path.exists(path)
+
+
+def add_failed_generation(song_id: str) -> None:
+    """
+    Adds a failed generation to the failed generations file.
+    :param song_id: str The ID of the song.
+    :return: None
+    """
+    with open("failed_generations.txt", "a") as file:
+        file.write(f"{song_id}\n")
+    file.close()
+    return None
+
+
+def check_failed_generation(song_id: str) -> bool:
+    """
+    Checks if the generation has failed by reading the top 5 lines.
+    :param song_id: str The ID of the song.
+    :return: bool True if the generation has failed, False otherwise.
+    """
+
+    # Get the top 5 lines of the file
+    with open("failed_generations.txt", "r") as file:
+        lines = [full_id[:-1:] for full_id in file.readlines()[-5::]]
+    file.close()
+    # Check if the song_id is in these lines
+    return song_id in lines
