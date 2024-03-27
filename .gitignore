@@ -3,4 +3,6 @@
 /backend/.idea/
 /backend/uploaded-files/
 /backend/model-resources/Model Checkpoints/
+/backend/failed_generations.txt
 /.idea/.name
+
