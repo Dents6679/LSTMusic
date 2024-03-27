@@ -87,6 +87,7 @@ a:active {
 }
 .popup button:hover {
     background-color: #529854;
+    cursor: pointer;
 }
 
 #about-text{
@@ -149,10 +150,12 @@ webaudio-pianoroll{
 
 #clear-button:hover{
     background-color: hsl(40, 100%, 38%);
+    cursor: pointer;
 }
 
 #generate-button:hover {
     background-color: hsl(265, 100%, 38%);
+    cursor: pointer;
 }
 
 #play-button {
@@ -174,6 +177,7 @@ webaudio-pianoroll{
 
 #play-button:hover {
     background-color: hsl(0, 70%, 51%);
+    cursor: pointer;
 }
 
 #back-button {
@@ -195,6 +199,7 @@ webaudio-pianoroll{
 
 #back-button:hover {
     background-color: hsl(0, 70%, 51%);
+    cursor: pointer;
 }
 
 
