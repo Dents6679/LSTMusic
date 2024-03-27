@@ -8,6 +8,7 @@ switch (errorId) {
 
     case '1': // Server not Available
         errorText.innerText = 'The backend server is not available right now. Please try again later.';
+        document.getElementById('gen-id').style.display = 'none';
         break;
     case '2': // Generation Error
         errorText.innerText = 'An error has occurred while trying to generate your Melody. Please try again.';
