@@ -40,18 +40,25 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
                                                      number_of_steps=extension_length,
                                                      max_sequence_length=SEQUENCE_LENGTH,
                                                      temperature=temperature)
-    except Exception:
-        print(f"Failed generating Melody through LSTM.")
+    except Exception as e:
+        # Prevent melody from being saved if generation fails.
         add_failed_generation(file_number)
+        raise GenerationError(f"Failed to generate melody: {e}")
+
+
 
     try:
         output_path = f"generated-melodies/extended_melody_{file_number}.mid"
-
         generated_melody_stream = streamify_melody(generated_melody)
         untransposed_melody = undo_transpose(generated_melody_stream, reverse_transposition)
         untransposed_melody.write("midi", output_path)
+
     except IOError as e:
-        print("Failed MIDI conversion & saving.")
+        print(f"Failed MIDI conversion & saving.")
+        raise e
+
+    except Exception as e:
+        print(f"Failed to save melody to server.")
         raise e
 
     print("Generation and post-processing complete, song has been saved..")

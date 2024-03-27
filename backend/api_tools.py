@@ -79,9 +79,17 @@ def preprocess_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interva
     # Parse Supplied MIDI song.
     api_supplied_song = m21.converter.parse(midi_path)
 
+    #TODO: See below comment
+    """
+        Turns out the frontend is able to provide note durations that are not in the ACCEPTABLE_DURATIONS list.
+        This may cause issues. Will test.
+    """
+
+    """
     # Filter out songs with non-acceptable durations (only using 1/16, 1/8, 1/4, 1/2, 1 notes)
     if not has_acceptable_durations(api_supplied_song, ACCEPTABLE_DURATIONS, verbose):
         raise InvalidNoteDurationError("The provided song contains an invalid Note length.")
+    """
 
     # Transpose Songs into CMaj/Amin for standardisation
     api_supplied_song, reverse_transposition = transpose(api_supplied_song, verbose)
