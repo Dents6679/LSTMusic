@@ -161,7 +161,6 @@ def generate_melody_new():
 
 @app.route('/check_status/<song_id>', methods=['POST', 'GET'])
 def check_status(song_id):
-    print(song_id)
 
     if check_failed_generation(song_id):
         response = make_response('failed', 200)
