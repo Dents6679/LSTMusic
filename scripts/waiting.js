@@ -1,4 +1,4 @@
-import {BACKEND_URL} from './front-page.js';
+const BACKEND_URL = "http://127.0.0.1:5000"
 let songId = location.search.split('songId=')[1];
 let attempts = 0;
 

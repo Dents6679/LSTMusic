@@ -57,7 +57,7 @@ pianoRoll.redraw();
 //       ------ Code -------
 
 const BACKEND_URL = "http://127.0.0.1:5000"
-export {BACKEND_URL}
+
 
 let temperature = 0.6 //set default temperature to 0.6
 let isPlaying = false; //set default playing state to false
@@ -235,18 +235,26 @@ async function requestMelodyExpansion(){
 
 
     const requestBody = stringifiedSequenceData+ ";;;" + temperature + ";;;" + outputLength;
-    try{
+    try {
         const response = await fetch(BACKEND_URL + '/generate_melody_new',
-            {  method: 'POST',
-                    headers:
-                        {
-                            'Content-Type': 'text/plain',
-                        },
-                    body: requestBody
+            {
+                method: 'POST',
+                headers:
+                    {
+                        'Content-Type': 'text/plain',
+                    },
+                body: requestBody
             }
         )
+        // Get response data and redirect to waiting page
+        const responseText = await response.text();
+        const responseObject = JSON.parse(responseText);
+        const responseMessages = responseObject.message.split(';');
+        const songId = responseMessages[1];
+        window.location.href = "waiting.html?songId=" + songId;
+
         if (!response.ok){
-            throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok');
         }
     }
     catch(error) {
@@ -254,12 +262,11 @@ async function requestMelodyExpansion(){
         window.location.href = "error.html?errorId=1"; // Redirect to error.html with errorId=1
     }
 
-    // Get response data and redirect to waiting page
-    const responseText = await response.text();
-    const responseObject = JSON.parse(responseText);
-    const responseMessages = responseObject.message.split(';');
-    const songId = responseMessages[1];
-    window.location.href = "waiting.html?songId=" + songId;
+
+
+
+
+
 }
 
 //Handle "About" button

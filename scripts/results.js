@@ -1,4 +1,4 @@
-import {BACKEND_URL} from './front-page.js';
+const BACKEND_URL = "http://127.0.0.1:5000"
 function getQueryParam(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
