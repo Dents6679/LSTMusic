@@ -165,13 +165,13 @@ webaudio-pianoroll{
 
     color: white;
     font-weight: bold;
-    background-color: hsl(13, 100%, 47%);
+    background-color: hsl(0, 91%, 60%);
     border: none;
     border-radius: 3px;
 }
 
 #play-button:hover {
-    background-color: hsl(13, 100%, 38%);
+    background-color: hsl(0, 70%, 51%);
 }
 
 #back-button {
@@ -186,13 +186,13 @@ webaudio-pianoroll{
 
     color: white;
     font-weight: bold;
-    background-color: hsl(13, 100%, 47%);
+    background-color: hsl(0, 91%, 60%);
     border: none;
     border-radius: 3px;
 }
 
 #back-button:hover {
-    background-color: hsl(13, 100%, 38%);
+    background-color: hsl(0, 70%, 51%);
 }
 
 

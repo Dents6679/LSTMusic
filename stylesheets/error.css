@@ -1,6 +1,6 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
+
     color: white;
     text-align: center;
     background-color: rgb(30,30,30);
@@ -11,33 +11,49 @@ body {
     position: absolute;
     border-radius: 5px;
     font-size: 2vh;
-    padding: 3%;
-    padding-top: 0%;
-    padding-bottom: 0;
+    padding: 0 3%;
+
     margin-top: auto;
     margin-bottom: 0%;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -120%);
     background-color: #312f31;
+
 }
 
 h1{
-    margin-bottom: 1%;
+    margin-bottom: 0.25%;
+}
+h4{
+    margin-top: 1%;
 }
 
-#please-wait-text{
+#error-text{
     font-size: 1.5vh;
     font-weight:lighter;
     color: rgb(153, 153, 153);
-    padding-top: 0;
-    padding-bottom: 0%;
-    margin-top: 0%;
+}
+
+#return-button{
+    font-size: min(2vh, 2.2vw);
+    color: white;
+    font-weight: bold;
+    background-color: #f63a3a;
+    border: none;
+    border-radius: 3px;
+    padding: 3% 5%;
+    margin-bottom: 2%;
 
 }
 
+#return-button:hover{
+    background-color: #da2b2b;
+}
+
 #warning-icon {
-    font-size: xxx-large;
+    font-size: x-large;
+    margin : 0;
 }
 
 #gen-id{
