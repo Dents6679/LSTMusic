@@ -1,4 +1,5 @@
-const BACKEND_URL = "http://127.0.0.1:5000"
+// const BACKEND_URL = "http://127.0.0.1:5000"
+const BACKEND_URL = "https://dents6679.pythonanywhere.com/"
 let songId = location.search.split('songId=')[1];
 let attempts = 0;
 

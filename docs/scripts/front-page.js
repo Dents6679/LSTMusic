@@ -57,7 +57,8 @@ pianoRoll.style.display = "inline"
 
 //       ------ Code -------
 
-const BACKEND_URL = "http://127.0.0.1:5000"
+// const BACKEND_URL = "http://127.0.0.1:5000"
+const BACKEND_URL = "https://dents6679.pythonanywhere.com/"
 
 
 let temperature = 0.6 //set default temperature to 0.6
