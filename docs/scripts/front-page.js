@@ -253,7 +253,7 @@ async function requestMelodyExpansion(){
         const responseObject = JSON.parse(responseText);
         const responseMessages = responseObject.message.split(';');
         const songId = responseMessages[1];
-        window.location.href = "waiting.html?songId=" + songId;
+        window.location.href = "/LSTMusic/waiting.html?songId=" + songId;
 
         if (!response.ok){
         throw new Error('Network response was not ok');
@@ -261,7 +261,7 @@ async function requestMelodyExpansion(){
     }
     catch(error) {
         console.error('Fetch request failed:', error);
-        window.location.href = "error.html?errorId=1"; // Redirect to error.html with errorId=1
+        window.location.href = "LSTMusic/error.html?errorId=1"; // Redirect to error.html with errorId=1
     }
 
 
