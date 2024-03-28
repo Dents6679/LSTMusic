@@ -16,18 +16,18 @@ const pollForCompletion = setInterval(async () => {
       console.log(status)
       if (status === 'complete') {
         clearInterval(pollForCompletion);
-        window.location.href = "/results.html?song_id=" + songId;
+        window.location.href = "results.html?song_id=" + songId;
       }
       else if(status === 'failed') {
         clearInterval(pollForCompletion);
-        window.location.href = "/error.html?errorId=2";
+        window.location.href = "error.html?errorId=2";
       }
 
     }
     if (attempts > 15) {
       clearInterval(pollForCompletion);
       console.log("Song took too long to process.")
-      window.location.href = "/error.html?errorId=3";
+      window.location.href = "error.html?errorId=3";
     }
 
   }, 2000); // Check every 2 seconds
