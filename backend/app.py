@@ -65,45 +65,6 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
     return None
 
 
-@app.route('/generate_melody', methods=['POST', 'GET'])
-def generate_melody():
-    """
-    Handles melody generation requests.
-    Takes a base 64 encoded MIDI file and responds with a message containing the generation's unique ID.
-    Also starts a new thread to generate the melody, which is saved to the server.
-    :return:
-    """
-
-    # Receive melody, preprocess and respond.
-    file_number = str(int(time.time()))
-    if request.method == 'POST':
-        try:
-            data_uri = str(request.data)
-        except IOError as e:
-            print(f"IOError: Failed to find data from fetch request.")
-            raise e
-
-        try:
-            _, base64_data = data_uri.split(',', 1)
-            base64_data = base64_data[:-1]  # Removes leftover ' from API
-            decoded_data = base64.b64decode(base64_data)
-
-            file_path = f"{UPLOAD_FOLDER_PATH}/melody_{file_number}.mid"
-
-            with open(file_path, "wb") as fp:
-                fp.write(decoded_data)
-        except TypeError as e:
-            print(f"Failed Decoding Base64 File: {e}")
-            raise e
-
-        generation_thread = threading.Thread(target=generate_to_server, args=(file_path, file_number))
-        generation_thread.start()
-
-        response_message = f"Generation request received.;{file_number}"  # Create response message
-        resp = jsonify({'status': 200, 'message': response_message})  # Create response
-        resp.status_code = 200  # Set status code
-
-        return resp
 
 
 @app.route('/generate_melody_new', methods=['POST', 'GET'])
