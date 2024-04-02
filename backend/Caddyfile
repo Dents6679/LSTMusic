@@ -1,0 +1,8 @@
+www.dents6679.com {
+    redir https://dents6679.com{uri}
+}
+
+dents6679.com {
+    reverse_proxy localhost:8000  # redirect any request to localhost:8000 (gunicorn local server)
+
+}
