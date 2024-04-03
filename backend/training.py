@@ -17,7 +17,7 @@ LOSS_FN = "sparse_categorical_crossentropy"
 LEARNING_RATE = 0.001
 NUM_UNITS = [256]
 BATCH_SIZE = 64
-MODEL_FILEPATH = "model-resources/Model Saves/model.keras"
+MODEL_FILEPATH = "model-resources/Model Saves/model.h5"
 ERK_DATASET_PATH = "dataset-resources/KERN/erk"
 KERN_DATASET_PATH = "dataset-resources/KERN"
 
