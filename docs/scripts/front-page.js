@@ -7,10 +7,12 @@ const pianoRoll = document.getElementById("piano-roll");
 let width = window.innerWidth;
 let height = window.innerHeight;
 
+
 //     ------ Sizing ------
 pianoRoll.width = width * 0.8;
 pianoRoll.height = height * 0.5;
 pianoRoll.kbwidth = width * 0.08; //width of the keyboard
+
 
 
 //      ------ Technical ------
@@ -164,6 +166,7 @@ function Callback(ev){
 	var g=actx.createGain();
 	o.type="sawtooth";
 	o.detune.value=(ev.n-69)*100;
+
 	g.gain.value=0;
 	o.start(actx.currentTime);
 	g.gain.setTargetAtTime(0.2,ev.t,0.005);
