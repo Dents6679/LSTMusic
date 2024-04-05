@@ -1,6 +1,8 @@
 // THANK YOU VERY MUCH TO G200KG FOR MAKING THIS FRONTEND POSSIBLE!
 // https://github.com/g200kg/webaudio-pianoroll
 
+// const BACKEND_URL = "http://127.0.0.1:5000"
+const BACKEND_URL = "https://dents6679.com/"
 
 // -- Setting up Piano Roll --
 const pianoRoll = document.getElementById("piano-roll");
@@ -59,8 +61,7 @@ pianoRoll.style.display = "inline"
 
 //       ------ Code -------
 
-// const BACKEND_URL = "http://127.0.0.1:5000"
-const BACKEND_URL = "https://dents6679.com/"
+
 
 
 let temperature = 0.6 //set default temperature to 0.6
