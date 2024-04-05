@@ -240,7 +240,7 @@ async function requestMelodyExpansion(){
     const stringifiedSequenceData = JSON.stringify(sequenceData);
 
 
-    const requestBody = stringifiedSequenceData+ ";;;" + temperature + ";;;" + outputLength;
+    const requestBody = stringifiedSequenceData+ ";;;" + temperature + ";;;" + outputLength + ";;;" + tempoSlider.value ;
     try {
         const response = await fetch(BACKEND_URL + '/generate_melody_new',
             {

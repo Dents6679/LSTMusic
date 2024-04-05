@@ -9,17 +9,19 @@ from typing import List
 MIDI_OUTPUT_PATH = "generated-melodies/melody.mid"
 
 
-def streamify_melody(melody: str, step_duration: float = 0.25) -> m21.stream.Stream:
+def streamify_melody(melody: str, step_duration: float = 0.25, tempo: int = 120) -> m21.stream.Stream:
     """
     De-encodes a Time Series String into an M21 Stream object.
 
     :param melody: The Melody to de-encode
     :param step_duration: The Step duration.
+    :param tempo: The tempo of the melody.
     :return stream: The M21 Stream representation of the melody.
     """
 
     # Create music21 stream
     stream = m21.stream.Stream()
+    stream.append(m21.tempo.MetronomeMark(number=tempo))
 
     # Parse melody's Symbols & Create note/rest objects.
     start_symbol = None
@@ -52,7 +54,7 @@ def streamify_melody(melody: str, step_duration: float = 0.25) -> m21.stream.Str
         else:
             step_count += 1
 
-    return stream  # stream.write("midi", path) will convert this into a MIDI file for later.
+    return stream
 
 
 def sample_with_temperature(probability_distribution: List[float], temperature: float) -> int:

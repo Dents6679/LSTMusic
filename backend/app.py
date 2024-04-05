@@ -18,7 +18,8 @@ app = Flask(__name__)
 CORS(app)
 
 
-def generate_to_server(base_file_path: str, file_number: str, temperature: float, extension_length: int) -> NoReturn:
+def generate_to_server(base_file_path: str, file_number: str, temperature: float, extension_length: int,
+                       tempo: int) -> NoReturn:
     """
     Extends a given base melody and saves it to the server with a unique identifier.
     defined as a separate function for use in a separate thread to allow for main thread to respond to client.
@@ -26,6 +27,7 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
     :param extension_length: The length of the melody to generate in LSTM event units.
     :param base_file_path: the path of the MIDI melody to extend.
     :param file_number: the unique identifier of the melody, used for output.
+    :param tempo: The tempo of the melody.
     :return: None
     :raises: IOError, GenerationError, Exception
     """
@@ -49,7 +51,7 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
 
     try:
         output_path = f"generated-melodies/extended_melody_{file_number}.mid"
-        generated_melody_stream = streamify_melody(generated_melody)
+        generated_melody_stream = streamify_melody(generated_melody, tempo=tempo)
         untransposed_melody = undo_transpose(generated_melody_stream, reverse_transposition)
         untransposed_melody.write("midi", output_path)
 
@@ -92,7 +94,13 @@ def generate_melody_new():
     response_items = response_data.split(';;;')
     temperature = float(response_items[1])
 
-    # Decode MML and save it as a MIDI file to server.
+    tempo = response_items[3][:-1:]
+    if tempo == '':
+        tempo = 120
+    else:
+        tempo = int(tempo)
+
+    # Decode Song and save it as a MIDI file to server.
     raw_sequence = response_items[0][2::]
 
     sequence = json.loads(raw_sequence)
@@ -101,7 +109,7 @@ def generate_melody_new():
     unextended_midi_file_path = process_api_sequence(sequence, song_id=song_id, verbose=True)
 
     # Calculate Extension Length for LSTM, Measured in 'series events' which represent a 16th of a note.
-    extension_length_in_bars = int(response_items[2][:-1])
+    extension_length_in_bars = int(response_items[2])
     extension_length_for_lstm = extension_length_in_bars * 16  # Convert to 16th notes
 
     # Start Melody Generation
@@ -109,7 +117,8 @@ def generate_melody_new():
     generation_thread = threading.Thread(target=generate_to_server, args=(unextended_midi_file_path,
                                                                           song_id,
                                                                           temperature,
-                                                                          extension_length_for_lstm))
+                                                                          extension_length_for_lstm,
+                                                                          tempo))
     generation_thread.start()
 
 
