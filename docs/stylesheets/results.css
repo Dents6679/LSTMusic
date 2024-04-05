@@ -37,6 +37,24 @@ midi-visualizer .piano-roll-visualizer {
   overflow: auto;
 }
 
+#return-button{
+    font-size: min(2vh, 2.2vw);
+    margin-left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-weight: bold;
+    background-color: #f63a3a;
+    border: none;
+    border-radius: 3px;
+    padding: 1% 1%;
+    margin-top: 5%;
+    margin-bottom: 2%;
+
+}
+
+#return-button:hover{
+    background-color: #da2b2b;
+}
 
 
 /* Custom play button & note colour styles */
