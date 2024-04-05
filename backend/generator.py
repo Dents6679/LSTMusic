@@ -114,8 +114,7 @@ class Generator:
             seed = seed[-max_sequence_length:]
 
             # One hot encode the Seed.
-            onehot_seed = keras.utils.to_categorical(seed, num_classes=len(
-                self._mappings))
+            onehot_seed = keras.utils.to_categorical(seed, num_classes=len(self._mappings))
             # TODO: This may cause issues, the length of self mappings may not be the same as a user inputted melody.
             # 3d array of (1, max_sequence_length * vocabulary size)
             onehot_seed = onehot_seed[np.newaxis, ...]
@@ -125,8 +124,13 @@ class Generator:
             # Could just use the highest probability item here...
             # But, to decrease the 'rigidity' of the output I'm going to use the temperature picked one instead.
 
-            output_int = sample_with_temperature(probability_distribution=next_note_probability_distribution,
-                                                 temperature=temperature)
+            # case for temperature = 0
+            if temperature == 0:
+                output_int = np.argmax(next_note_probability_distribution)
+                # TODO: Check this works properly!
+            else:
+                output_int = sample_with_temperature(probability_distribution=next_note_probability_distribution,
+                                                     temperature=temperature)
 
             # Update the adding the sampled int.
             seed.append(output_int)
