@@ -8,6 +8,21 @@ body{
     white-space: nowrap;
 }
 
+
+#title {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: min(4vh, 4vw);
+}
+
+#section1{
+    transform: translateY(40%);
+    margin-bottom: 5%;
+
+}
+
 midi-player {
   display: block;
   width: inherit;
@@ -61,8 +76,10 @@ midi-visualizer .piano-roll-visualizer {
 
 
 :root{
-  --section-1-colour: rgb(220, 174, 249);
-  --section-1-colour-hover: rgb(200, 127, 245);
+  /*--section-1-colour: rgb(220, 174, 249);*/
+  /*--section-1-colour-hover: rgb(200, 127, 245);*/
+  --section-1-colour: #ADF9C2;
+  --section-1-colour-hover: #7FFFAA;
   --section-2-colour: rgb(247, 226, 151);
   --section-2-colour-hover: rgb(244, 213, 103);
   --section-3-colour: rgb(249, 174, 174);
@@ -71,13 +88,13 @@ midi-visualizer .piano-roll-visualizer {
 
 
 #section1 midi-player::part(play-button) {
-  color: rgb(255, 255, 255);
-  
+
+  color: rgb(19, 19, 19);
   background-color: var(--section-1-colour);
   border-radius: 5px;
   transition: all 0.2s;
-  content: 'hello';
 }
+
 
 #section1 midi-player::part(play-button):hover {
   color: rgb(255, 255, 255);
