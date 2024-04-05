@@ -53,9 +53,11 @@ midi-visualizer .piano-roll-visualizer {
 }
 
 #return-button{
+    position:absolute;
+    left: 50%;
+    top: 85%;
     font-size: min(2vh, 2.2vw);
-    margin-left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     color: white;
     font-weight: bold;
     background-color: #f63a3a;
