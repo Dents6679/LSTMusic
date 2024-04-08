@@ -67,7 +67,12 @@ def generate_to_server(base_file_path: str, file_number: str, temperature: float
     return None
 
 
+# --- Site routes ---
 
+@app.route('/', methods=['GET'])
+def index():
+    return ("<h1>Welcome to the Melody Generator API!</h1> "
+            "<p>If you're seeing this page, it means that the server is running.</p>")
 
 @app.route('/generate_melody_new', methods=['POST', 'GET'])
 def generate_melody_new():
