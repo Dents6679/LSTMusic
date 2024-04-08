@@ -117,19 +117,15 @@ class Generator:
 
             # One hot encode the Seed.
             onehot_seed = keras.utils.to_categorical(seed, num_classes=len(self._mappings))
-            # TODO: This may cause issues, the length of self mappings may not be the same as a user inputted melody.
-            # 3d array of (1, max_sequence_length * vocabulary size)
             onehot_seed = onehot_seed[np.newaxis, ...]
 
-            # Predict the next note. (gives a probability of each symbol in the vocabulary.)
+            # Predict the prbabilities of the next note. (gives a probability of each symbol in the vocabulary.)
             next_note_probability_distribution = self.model.predict(onehot_seed, verbose=verbose)[0]
-            # Could just use the highest probability item here...
-            # But, to decrease the 'rigidity' of the output I'm going to use the temperature picked one instead.
 
-            # case for temperature = 0
+
+            # Select a note from the distribution. If the temp is 0, pick the most likely note.
             if temperature == 0:
                 output_int = np.argmax(next_note_probability_distribution)
-                # TODO: Check this works properly!
             else:
                 output_int = sample_with_temperature(probability_distribution=next_note_probability_distribution,
                                                      temperature=temperature)
@@ -140,9 +136,9 @@ class Generator:
             # Map sampled, encoded int to it's unencoded value.
             output_symbol = [k for k, v in self._mappings.items() if v == output_int][0]
 
-            # Check if we're at the melody's end
+            # End the melody if the system decides it's most likely to end.
             if output_symbol == "/":
-                break
+                continue
 
             # Update the Melody
             melody.append(output_symbol)
