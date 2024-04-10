@@ -95,7 +95,7 @@ tempSlider.oninput = function () {
 let lenSlider = document.getElementById("len-slider"); //fetch slider object
 let lenOutput = document.getElementById("len-number"); //fetch output text
 
-lenOutput.innerHTML = "Hello" //lenSlider.value; // Display the default slider value
+lenOutput.innerHTML = "short" //lenSlider.value; // Display the default slider value
 
 
 
@@ -103,13 +103,13 @@ lenSlider.oninput = function () {
 
                                         let outputTxt = "";
                                         if(this.value == 5){
-                                            outputTxt = "Medium"
+                                            outputTxt = "medium"
                                         }
                                         else if(this.value <= 4){
-                                            outputTxt = "Short"
+                                            outputTxt = "short"
                                         }
                                         else if(this.value <= 8){
-                                            outputTxt = "Long"
+                                            outputTxt = "long"
                                         }
 
 
