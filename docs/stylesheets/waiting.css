@@ -42,6 +42,26 @@ h1{
     padding-bottom: 2%;
 }
 
+#return-button{
+    position: absolute;
+    left: 50%;
+    top: 85%;
+    transform: translate(-50%, -50%);
+    font-size: min(2vh, 2.2vw);
+    color: white;
+    font-weight: bold;
+    background-color: #f63a3a;
+    border: none;
+    border-radius: 3px;
+    padding: 1% 2%;
+    margin-bottom: 2%;
+
+}
+
+#return-button:hover{
+    background-color: #da2b2b;
+}
+
 #gen-id{
     position:absolute;
     bottom: 1%;
@@ -53,3 +73,5 @@ h1{
     padding-bottom: 2%;
     
 }
+
+
