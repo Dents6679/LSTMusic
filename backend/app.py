@@ -111,18 +111,19 @@ def generate_melody_new():
     sequence = json.loads(raw_sequence)
 
     # TODO: Save the sequence as a MIDI file to the server.
-    unextended_midi_file_path = process_api_sequence(sequence, song_id=song_id, verbose=True)
+    unextended_midi_file_path, extension_offset = process_api_sequence(sequence, song_id=song_id, verbose=True)
 
     # Calculate Extension Length for LSTM, Measured in 'series events' which represent a 16th of a note.
     extension_length_in_bars = int(response_items[2])
     extension_length_for_lstm = extension_length_in_bars * 16  # Convert to 16th notes
+    offset_extension_length_for_lstm = int(extension_length_for_lstm + extension_offset)  # Add offset to extension length
 
     # Start Melody Generation
 
     generation_thread = threading.Thread(target=generate_to_server, args=(unextended_midi_file_path,
                                                                           song_id,
                                                                           temperature,
-                                                                          extension_length_for_lstm,
+                                                                          offset_extension_length_for_lstm,
                                                                           tempo))
     generation_thread.start()
 
