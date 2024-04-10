@@ -208,12 +208,12 @@ webaudio-pianoroll{
 .param-container{
     border-radius: 4px;
     background-color: #464646;
-    width: 10%;
+    width: 12.5%;
     height: 5%;
     transform: translate(-50%, -50%);
 
     position:absolute;
-    left: 85%;
+    left: 83.5%;
 }
 
 #temp-container {
@@ -240,14 +240,15 @@ webaudio-pianoroll{
 
 #len-readout{
     position: absolute;
+
     top: 8%;
-    left: 10%;
+    left: 6%;
 }
 
 #bpm-readout{
     position: absolute;
     top: 8%;
-    left: 10%;
+    left: 20%;
 }
 
 #temp-number{
