@@ -20,14 +20,14 @@ class InvalidNoteDurationError(Exception):
         super().__init__(self.message)
 
 
-def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: bool = False, ) -> str:
+def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: bool = False) -> Tuple[str, int]:
     """
     preprocesses a single api-supplied sequence into a MIDI file.
 
     :param sequence: The sequence to save as a MIDI file.
     :param song_id: The ID of the song.
     :param verbose: Enable additional print statements for debug purposes. Default is False.
-    :return: The path of the saved MIDI file.
+    :return: Tuple, The path of the saved MIDI file and the length to offset the generation by.
     """
 
     # Turn the sequence into a 2d array
@@ -35,20 +35,24 @@ def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: 
     # Create a new stream
     stream = m21.stream.Stream()
 
-    last_event_end = 0
+
+    last_event_end = 0  # Used for keeping track of rest durations
+    total_duration = 0  # Used for keeping track of total inputted melody duration. Allows for extension length to work.
+
     # Work out rests and note durations
     for event_index, event in enumerate(sequence):
         event_start = event[0]
         event_pitch = event[1]
         event_duration = event[2]
         event_duration_in_quarter_lengths = event_duration / 2
-
+        total_duration += event_duration_in_quarter_lengths  # Add length to total duration
         # Handle rests
         if last_event_end < event_start:
-            rest_duration = event_start - last_event_end
-            rest = m21.note.Rest(quarterLength=rest_duration/2)
+            rest_duration_in_quarter_lengths = (event_start - last_event_end)/2
+            rest = m21.note.Rest(quarterLength=rest_duration_in_quarter_lengths)
             # Length is halved here to convert to quarter lengths
             stream.append(rest)
+            total_duration += rest_duration_in_quarter_lengths  # Add rest length to total duration
         # Handle notes
         note = m21.note.Note(event_pitch, quarterLength=event_duration_in_quarter_lengths)
         stream.append(note)
@@ -62,7 +66,7 @@ def process_api_sequence(sequence: List[Dict[str, int]], song_id: str, verbose: 
     if verbose:
         print(f"Saved MIDI file to {midi_file_path}")
 
-    return midi_file_path
+    return midi_file_path, total_duration
 
 
 def preprocess_midi(midi_path, verbose=False) -> Tuple[str, m21.interval.Interval]:

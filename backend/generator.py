@@ -110,11 +110,9 @@ class Generator:
 
         # Map seed to int representation
         seed = [self._mappings[symbol] for symbol in seed]
-
         for _ in range(number_of_steps):
             # Limit the seed to the max sequence length
             seed = seed[-max_sequence_length:]
-
             # One hot encode the Seed.
             onehot_seed = keras.utils.to_categorical(seed, num_classes=len(self._mappings))
             onehot_seed = onehot_seed[np.newaxis, ...]
