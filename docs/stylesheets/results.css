@@ -9,16 +9,18 @@ body{
 }
 
 
-#title {
-  position: absolute;
-  top: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: min(4vh, 4vw);
+#title{
+    position: absolute;
+    font-size: 3vh;
+    margin-top: 1%;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+
 #section1{
-    transform: translateY(40%);
+    transform: translateY(70%);
     margin-bottom: 5%;
 
 }
